@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, _)}">
+<head>
+    <title th:text="|Event - ${event.summary}|"></title>
+</head>
+<body>
+
+<th:block th:ref="main">
+    <div class="container" th:object="${event}">
+        <h3 class="my-3" th:text="*{summary}"></h3>
+        <dl>
+            <dt>Owner</dt>
+            <dd th:text="*{ownerName}">Chuck Norris</dd>
+            <dd>&nbsp;</dd>
+
+            <dt>Attendee</dt>
+            <dd th:text="*{attendeeName}"></dd>
+            <dd>&nbsp;</dd>
+
+            <dt>Event Date/Time</dt>
+            <dd th:text="*{eventDateTime}">today</dd>
+            <dd>&nbsp;</dd>
+
+            <dt>Description</dt>
+            <dd th:text="*{description}"></dd>
+            <dd>&nbsp;</dd>
+        </dl>
+    </div>
+</th:block>
+
+<script type="text/javascript">
+</script>
+
+</body>
+</html>

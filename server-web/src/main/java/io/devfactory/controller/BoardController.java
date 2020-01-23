@@ -15,16 +15,16 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping({"", "/"})
-    public String boardForm(@RequestParam(defaultValue = "0") Long idx, Model model) {
-        model.addAttribute("board", boardService.findBoardByIdx(idx));
-        return "board/form";
-    }
-
-    @GetMapping("/list")
+    @GetMapping("/boards")
     public String boardList(@PageableDefault Pageable pageable, Model model) {
         model.addAttribute("boardList", boardService.findBoards(pageable));
-        return "board/list";
+        return "boards/list";
+    }
+
+    @GetMapping("/boards/form")
+    public String boardForm(@RequestParam(defaultValue = "0") Long idx, Model model) {
+        model.addAttribute("board", boardService.findBoardByIdx(idx));
+        return "boards/form";
     }
 
 }
