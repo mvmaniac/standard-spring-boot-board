@@ -16,19 +16,19 @@ import static io.devfactory.util.FunctionUtils.emptyEntity;
 @Service
 public class BoardService {
 
-    private final BoardRepository boardRepository;
+  private final BoardRepository boardRepository;
 
-    public Page<Board> findBoards(Pageable pageable) {
-        final PageRequest pageRequest = PageRequest.of(
-            pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-            pageable.getPageSize(),
-            pageable.getSort()
-        );
-        return boardRepository.findAll(pageRequest);
-    }
+  public Page<Board> findBoards(Pageable pageable) {
+    final PageRequest pageRequest = PageRequest.of(
+      pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+      pageable.getPageSize(),
+      pageable.getSort()
+    );
+    return boardRepository.findAll(pageRequest);
+  }
 
-    public Board findBoardByIdx(Long idx) {
-        return boardRepository.findById(idx).orElseGet(emptyEntity(Board.create().build()));
-    }
+  public Board findBoardByIdx(Long idx) {
+    return boardRepository.findById(idx).orElseGet(emptyEntity(Board.create().build()));
+  }
 
 }

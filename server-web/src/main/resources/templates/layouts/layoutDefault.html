@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="default(main, title, js, css)">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
 
-    <th:block th:replace="${css}"/>
+  <th:block th:replace="${css}"/>
 
-    <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
+  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
 </head>
 <body>
-    <header th:insert="~{layouts/fragments/header :: header}"></header>
+  <!--// @formatter:off-->
+  <header th:insert="~{layouts/fragments/header :: header}"></header>
 
-    <main th:insert="${main}"></main>
+  <main th:insert="${main}"></main>
 
-    <footer class="text-muted" th:insert="~{layouts/fragments/footer :: footer}"></footer>
+  <footer class="text-muted" th:insert="~{layouts/fragments/footer :: footer}"></footer>
 
-    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 
-    <th:block th:replace="${js}"/>
+  <th:block th:replace="${js}"/>
+  <!--// @formatter:on-->
 </body>
 </html>

@@ -1,63 +1,64 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, _)}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, _)}">
 <head>
-    <title>등록 - DevFactory</title>
+  <title>등록 - DevFactory</title>
 </head>
 <body>
 
 <th:block th:ref="main">
-    <div class="container">
-        <form id="frm" method="post" class="needs-validation" th:action="@{/events}">
-            <h3 class="pt-2">게시글 등록</h3>
+  <div class="container">
+    <form id="frm" method="post" class="needs-validation" th:action="@{/events}">
+      <h3 class="pt-2">게시글 등록</h3>
 
-            <div class="form-group">
-                <label for="attendeeEmail">Attendee Email</label>
-                <input type="email" class="form-control" id="attendeeEmail" placeholder="you@example.com" required>
-                <div class="invalid-feedback d-block" ></div>
-            </div>
+      <div class="form-group">
+        <label for="attendeeEmail">Attendee Email</label>
+        <input type="email" class="form-control" id="attendeeEmail" placeholder="you@example.com" required>
+        <div class="invalid-feedback d-block"></div>
+      </div>
 
-            <div class="form-group">
-                <label for="eventDateTime">Event Date/Time<span class="text-muted">&nbsp;(yyyy-MM-dd HH:mm:ss)</span></label>
-                <input type="text" class="form-control" id="eventDateTime" placeholder="2020-01-15 14:00:00" required>
-                <div class="invalid-feedback d-block"></div>
-            </div>
+      <div class="form-group">
+        <label for="eventDateTime">Event Date/Time<span class="text-muted">&nbsp;(yyyy-MM-dd HH:mm:ss)</span></label>
+        <input type="text" class="form-control" id="eventDateTime" placeholder="2020-01-15 14:00:00" required>
+        <div class="invalid-feedback d-block"></div>
+      </div>
 
-            <div class="form-group">
-                <label for="summary">Summary</label>
-                <input type="text" class="form-control" id="summary" required>
-                <div class="invalid-feedback d-block" ></div>
-            </div>
+      <div class="form-group">
+        <label for="summary">Summary</label>
+        <input type="text" class="form-control" id="summary" required>
+        <div class="invalid-feedback d-block"></div>
+      </div>
 
-            <div class="form-group">
-                <label for="description">Description<span class="text-muted">&nbsp;(Optional)</span></label>
-                <textarea  type="text" class="form-control" id="description" rows="5"></textarea>
-            </div>
+      <div class="form-group">
+        <label for="description">Description<span class="text-muted">&nbsp;(Optional)</span></label>
+        <textarea type="text" class="form-control" id="description" rows="5"></textarea>
+      </div>
 
-            <div class="form-group mb-0">
-                <a href="#" class="btn btn-primary btn-sm" title="Create" id="create">Create</a>
-                <a href="#" class="btn btn-secondary btn-sm" title="Auto Populate Form" id="auto">Auto Populate Form</a>
-            </div>
-        </form>
-    </div>
+      <div class="form-group mb-0">
+        <a href="#" class="btn btn-primary btn-sm" title="Create" id="create">Create</a>
+        <a href="#" class="btn btn-secondary btn-sm" title="Auto Populate Form" id="auto">Auto Populate Form</a>
+      </div>
+    </form>
+  </div>
 </th:block>
 
 <script type="text/javascript">
-    $(function () {
-        const $frm = $("#frm");
+  $(function () {
+    const $frm = $("#frm");
 
-        const createEvent = (type) => {
-            console.log("type: %s", type);
+    const createEvent = (type) => {
+      console.log("type: %s", type);
 
-            if ("auto" === type) {
-                $frm.attr("action", $frm.attr("action") +"?auto");
-            }
+      if ("auto" === type) {
+        $frm.attr("action", $frm.attr("action") + "?auto");
+      }
 
-            $frm.submit();
-        };
+      $frm.submit();
+    };
 
-        $("#create").on("click", () => createEvent("create"));
-        $("#auto").on("click", () => createEvent("auto"));
-    });
+    $("#create").on("click", () => createEvent("create"));
+    $("#auto").on("click", () => createEvent("auto"));
+  });
 </script>
 
 </body>

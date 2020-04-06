@@ -17,22 +17,22 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Controller
 public class BoardController {
 
-    private final BoardService boardService;
+  private final BoardService boardService;
 
-    @GetMapping("/boards")
-    public String boardList(@PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable, Model model) {
-        final Page<Board> boards = boardService.findBoards(pageable);
+  @GetMapping("/boards")
+  public String boardList(@PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable, Model model) {
+    final Page<Board> boards = boardService.findBoards(pageable);
 
-        model.addAttribute("count", boards.getTotalElements());
-        model.addAttribute("boards", boards);
+    model.addAttribute("count", boards.getTotalElements());
+    model.addAttribute("boards", boards);
 
-        return "views/board/list";
-    }
+    return "views/board/list";
+  }
 
-    @GetMapping("/boards/form")
-    public String boardForm(@RequestParam(defaultValue = "0") Long idx, Model model) {
-        model.addAttribute("board", boardService.findBoardByIdx(idx));
-        return "views/board/form";
-    }
+  @GetMapping("/boards/form")
+  public String boardForm(@RequestParam(defaultValue = "0") Long idx, Model model) {
+    model.addAttribute("board", boardService.findBoardByIdx(idx));
+    return "views/board/form";
+  }
 
 }

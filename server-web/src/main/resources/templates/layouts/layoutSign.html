@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="sign(main, title)">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/sign.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/sign.css}"/>
 
-    <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
+  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
 </head>
 <body>
-    <main th:insert="${main}"></main>
-    <script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
+  <!--// @formatter:off-->
+  <main th:insert="${main}"></main>
+  <script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
+  <!--// @formatter:on-->
 </body>
 </html>
