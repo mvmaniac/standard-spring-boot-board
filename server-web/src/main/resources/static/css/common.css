@@ -20,6 +20,14 @@ footer p {
 }
 
 /* bootstrap css overwrite */
+.navbar {
+    padding: .5rem 0;
+}
+
+.pagination {
+    flex-wrap: wrap;
+}
+
 .page-link {
     position: relative;
     display: block;
@@ -30,6 +38,7 @@ footer p {
     background-color: #343a40;
     border: 1px solid #454d55;
 }
+
 .page-item.disabled .page-link {
     color: #bfbfbf;
     pointer-events: none;
@@ -40,14 +49,14 @@ footer p {
 
 .page-item.active .page-link {
     z-index: 1;
-    color: #fff;
-    background-color: #343a40;
+    color: #343a40;
+    background-color: #fff;
     border-color: #454d55;
 }
 
 .page-link:focus, .page-link:hover {
-    color: #343a40;
+    color: #fff;
     text-decoration: none;
-    background-color: #fff;
+    background-color: #bfbfbf;
     border-color: #454d55;
 }

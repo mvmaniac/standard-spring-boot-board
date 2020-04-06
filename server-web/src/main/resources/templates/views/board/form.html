@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, _)}">
 <head>
-    <title>등록</title>
+    <title>등록 - DevFactory</title>
 </head>
 <body>
 
 <th:block th:ref="main">
     <div class="container">
         <form id="frm" method="post" class="needs-validation" th:action="@{/events}">
-            <h3>Event Information</h3>
+            <h3 class="pt-2">게시글 등록</h3>
 
             <div class="form-group">
                 <label for="attendeeEmail">Attendee Email</label>

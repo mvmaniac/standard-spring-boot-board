@@ -123,6 +123,11 @@ body {
     z-index: 1;
 }
 
+.btn-sign {
+    color: white;
+    background-color: #007bff;
+}
+
 .btn-google {
     color: white;
     background-color: #ea4335;

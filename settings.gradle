@@ -4,6 +4,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'practice-spring-boot-board'
+rootProject.name = 'standard-spring-boot-board'
 
 include 'server-batch', 'server-rest', 'server-web'
