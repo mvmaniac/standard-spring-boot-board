@@ -8,56 +8,52 @@
 
 <th:block th:ref="main">
   <div class="container">
-    <form id="frm" method="post" class="needs-validation" th:action="@{/events}">
-      <h3 class="pt-2">게시글 등록</h3>
+    <input id="boardIdx" type="hidden" th:value="${board?.idx}">
+    <h3 class="pt-3">게시글 등록</h3>
+    <hr>
+    <div class="form-group">
+      <label for="boardType">게시판 선택</label>
+      <select id="boardType" class="form-control">
+        <option>--선택--</option>
+        <option th:value="notice" th:selected="${board?.boardType?.name eq 'notice'}">공지사항</option>
+        <option th:value="free" th:selected="${board?.boardType?.name eq 'free'}">자유게시판</option>
+      </select>
+      <div class="invalid-feedback d-block"></div>
+    </div>
 
-      <div class="form-group">
-        <label for="attendeeEmail">Attendee Email</label>
-        <input type="email" class="form-control" id="attendeeEmail" placeholder="you@example.com" required>
-        <div class="invalid-feedback d-block"></div>
-      </div>
+    <div class="form-group">
+      <label for="boardTitle">제목</label>
+      <input id="boardTitle" type="text" class="form-control" required th:value="${board?.title}">
+      <div class="invalid-feedback d-block"></div>
+    </div>
 
-      <div class="form-group">
-        <label for="eventDateTime">Event Date/Time<span class="text-muted">&nbsp;(yyyy-MM-dd HH:mm:ss)</span></label>
-        <input type="text" class="form-control" id="eventDateTime" placeholder="2020-01-15 14:00:00" required>
-        <div class="invalid-feedback d-block"></div>
-      </div>
+    <div class="form-group">
+      <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label></label>
+      <input id="boardSubTitle" type="text" class="form-control" required th:value="${board?.subTitle}">
+      <div class="invalid-feedback d-block"></div>
+    </div>
 
-      <div class="form-group">
-        <label for="summary">Summary</label>
-        <input type="text" class="form-control" id="summary" required>
-        <div class="invalid-feedback d-block"></div>
-      </div>
+    <div class="form-group">
+      <label for="boardContent">내용<span class="text-muted">&nbsp;(Optional)</span></label>
+      <textarea id="boardContent" type="text" class="form-control" rows="5" th:text="${board?.content}"></textarea>
+    </div>
 
-      <div class="form-group">
-        <label for="description">Description<span class="text-muted">&nbsp;(Optional)</span></label>
-        <textarea type="text" class="form-control" id="description" rows="5"></textarea>
-      </div>
-
-      <div class="form-group mb-0">
-        <a href="#" class="btn btn-primary btn-sm" title="Create" id="create">Create</a>
-        <a href="#" class="btn btn-secondary btn-sm" title="Auto Populate Form" id="auto">Auto Populate Form</a>
-      </div>
-    </form>
+    <div class="form-group mb-0 d-flex justify-content-between">
+      <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
+      <span>
+        <a href="#" id="btnInsert" class="btn btn-primary btn-sm" title="저장">저장</a>
+        <a href="#" id="btnUpdate" class="btn btn-info btn-sm" title="수정">수정</a>
+        <a href="#" id="btnDelete" class="btn btn-danger btn-sm" title="삭제">삭제</a>
+      </span>
+    </div>
   </div>
 </th:block>
 
-<script type="text/javascript">
+<script th:inline="javascript">
   $(function () {
-    const $frm = $("#frm");
-
-    const createEvent = (type) => {
-      console.log("type: %s", type);
-
-      if ("auto" === type) {
-        $frm.attr("action", $frm.attr("action") + "?auto");
-      }
-
-      $frm.submit();
-    };
-
-    $("#create").on("click", () => createEvent("create"));
-    $("#auto").on("click", () => createEvent("auto"));
+    $("#btnList").click(function () {
+      location.href = '[(@{/boards})]';
+    });
   });
 </script>
 

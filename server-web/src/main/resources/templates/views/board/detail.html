@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, _)}">
+      th:insert="~{layouts/layoutDefault :: default(~{::main}, ~{::title}, ~{::script}, ~{::style})}">
 <head>
-  <title th:text="|Event - ${event.summary}|"></title>
+  <title>보기 - DevFactory</title>
+  <style>
+    dd {margin-bottom: 1.5rem}
+    dd:last-child {margin-bottom: 0}
+  </style>
 </head>
 <body>
 
 <th:block th:ref="main">
-  <div class="container" th:object="${event}">
-    <h3 class="my-3" th:text="*{summary}"></h3>
+  <div class="container" th:object="${board}">
+    <h3 class="pt-3" th:text="*{title}"></h3>
+    <hr>
     <dl>
-      <dt>Owner</dt>
-      <dd th:text="*{ownerName}">Chuck Norris</dd>
-      <dd>&nbsp;</dd>
+      <dt>게시판</dt>
+      <dd th:text="*{boardType}"></dd>
 
-      <dt>Attendee</dt>
-      <dd th:text="*{attendeeName}"></dd>
-      <dd>&nbsp;</dd>
+      <dt>부제목</dt>
+      <dd th:text="*{subTitle}"></dd>
 
-      <dt>Event Date/Time</dt>
-      <dd th:text="*{eventDateTime}">today</dd>
-      <dd>&nbsp;</dd>
+      <dt>내용</dt>
+      <dd th:text="*{content}"></dd>
 
-      <dt>Description</dt>
-      <dd th:text="*{description}"></dd>
-      <dd>&nbsp;</dd>
+      <dt>등록일 / 수정일</dt>
+      <dd th:text="|*{createdDate} / *{updatedDate}|"></dd>
     </dl>
+    <hr>
+    <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
   </div>
 </th:block>
 
-<script type="text/javascript">
+<script th:inline="javascript">
+  $(function () {
+    $("#btnList").click(function () {
+      location.href = '[(@{/boards})]';
+    });
+  });
 </script>
 
 </body>

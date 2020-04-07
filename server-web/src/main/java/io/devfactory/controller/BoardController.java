@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -33,6 +34,14 @@ public class BoardController {
   public String boardForm(@RequestParam(defaultValue = "0") Long idx, Model model) {
     model.addAttribute("board", boardService.findBoardByIdx(idx));
     return "views/board/form";
+  }
+
+  // TODO: 추후 확인 후 제거
+  @GetMapping("/boards/{idx}")
+  public String boardView(@PathVariable("idx") Long idx, Model model) {
+    final Board findBoard = boardService.findBoardByIdx(idx);
+    model.addAttribute("board", findBoard);
+    return "views/board/detail";
   }
 
 }

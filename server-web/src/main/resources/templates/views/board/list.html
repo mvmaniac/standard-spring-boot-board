@@ -31,13 +31,13 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:if="${count == 0}">
+          <tr th:if="${count eq 0}">
             <td colspan="5" class="font-weight-bold">게시글이 없습니다.</td>
           </tr>
           <tr th:each="board: ${boards}">
             <td th:text="${board.idx}"></td>
             <td th:text="${board.boardType.value}"></td>
-            <td><a th:href="@{/boards/{idx}(idx=${board.idx})}" th:text="${board.title}" class="text-white"></a></td>
+            <td><a th:href="@{/boards/{idx}(idx=${board.idx},page=${boards.number + 1})}" th:text="${board.title}" class="text-white"></a></td>
             <td th:text="${board.createdBy}"></td>
             <td th:text="${#temporals.format(board.createdDate, 'yyyy-mm-dd HH:mm:ss')}"></td>
           </tr>
@@ -69,7 +69,8 @@
             nextPage: <span th:text="${nextPage}"></span><br/>
             startPage: <span th:text="${startPage}"></span><br/>
             endPage: <span th:text="${endPage}"></span><br/>
-            isPrev: <span th:text="${isPrev}"></span><br/>
+            isPrev: <span th:text="${isPrev}"></span><br
+            />
             isNext: <span th:text="${isNext}"></span><br/>
         </div>
     </div>-->
@@ -113,6 +114,9 @@
 </th:block>
 
 <script type="text/javascript">
+  $(function () {
+
+  });
 </script>
 
 </body>

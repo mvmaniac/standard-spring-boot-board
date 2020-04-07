@@ -26,7 +26,10 @@
 
             <div th:unless="${param.expired eq null}" class="alert alert-success">
               <strong>Session Expired</strong><br/>
-              <span>You have been forcibly logged out due to multiple sessions on the same account <br/>(only one active session per user is allowed).</span>
+              <span>
+                You have been forcibly logged out due to multiple sessions on the same account<br/>
+                (only one active session per user is allowed).
+              </span>
             </div>
 
             <form class="form-sign-in" method="post" th:action="@{/login}">
@@ -36,8 +39,7 @@
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="비밀번호"
-                       required>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="비밀번호" required>
                 <label for="inputPassword">비밀번호</label>
               </div>
 
