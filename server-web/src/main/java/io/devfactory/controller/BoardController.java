@@ -1,5 +1,7 @@
 package io.devfactory.controller;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 import io.devfactory.domain.Board;
 import io.devfactory.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.springframework.data.domain.Sort.Direction.DESC;
-
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
@@ -21,7 +21,8 @@ public class BoardController {
   private final BoardService boardService;
 
   @GetMapping("/boards")
-  public String boardList(@PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable, Model model) {
+  public String boardList(@PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable,
+    Model model) {
     final Page<Board> boards = boardService.findBoards(pageable);
 
     model.addAttribute("count", boards.getTotalElements());

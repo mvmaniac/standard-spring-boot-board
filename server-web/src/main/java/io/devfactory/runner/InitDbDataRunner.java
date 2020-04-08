@@ -1,19 +1,18 @@
 package io.devfactory.runner;
 
 import io.devfactory.domain.Board;
-import io.devfactory.domain.BoardType;
 import io.devfactory.domain.Member;
+import io.devfactory.domain.enums.BoardType;
 import io.devfactory.repository.BoardRepository;
 import io.devfactory.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component

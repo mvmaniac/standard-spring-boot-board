@@ -28,3 +28,19 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+google:
+  client:
+    clientId: ENC(naf/5o9TmvTz529zaIBGl8YC0I5F4bitRiVylMb3rUXxXn2enCPm1M17fKYupQX57vPz5CKAvRmFajuPJl41vccXraVj8cQ/BERk52BnlWmLQoD87N4DHA==)
+    clientSecret: ENC(8dyBuMh6ed5k1wgvOEwSM1uQd6XdsWT4ZNdf6XMqC8NhgN7gFXDIlw==)
+    accsssTokenUri: https://accounts.google.com/o/oauth2/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+    scope: profile, email
+
+kakao:
+  client:
+    clientId: ENC(3R70gOrHTUJv2iDmUKfet7+2qtjbaqJR/+RVdh+CORmJu9NeMCjnlgh8nkniHahO)
+    accessTokenUri: https://kauth.kakao.com/oauth/token
+    userAuthorizationUri: https://kauth.kakao.com/oauth/authorize
+  resource:
+    userInfoUri: https://kapi.kakao.com/v1/user/me

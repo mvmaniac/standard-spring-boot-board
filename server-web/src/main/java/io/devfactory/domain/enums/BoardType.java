@@ -1,4 +1,4 @@
-package io.devfactory.domain;
+package io.devfactory.domain.enums;
 
 public enum BoardType {
 

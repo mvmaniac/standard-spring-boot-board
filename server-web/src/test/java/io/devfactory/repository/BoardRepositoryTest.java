@@ -1,8 +1,13 @@
 package io.devfactory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
+
 import io.devfactory.domain.Board;
-import io.devfactory.domain.BoardType;
 import io.devfactory.domain.Member;
+import io.devfactory.domain.enums.BoardType;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -10,12 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestConstructor;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
-import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @RequiredArgsConstructor
 @TestConstructor(autowireMode = ALL)

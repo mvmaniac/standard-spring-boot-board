@@ -1,11 +1,10 @@
 package io.devfactory.domain;
 
 import io.devfactory.domain.base.BaseEntity;
+import io.devfactory.domain.enums.BoardType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 
@@ -48,17 +47,6 @@ public class Board extends BaseEntity {
     this.content = content;
     this.boardType = boardType;
     this.member = member;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-      .append("idx", idx)
-      .append("title", title)
-      .append("subTitle", subTitle)
-      .append("content", content)
-      .append("boardType", boardType)
-      .toString();
   }
 
 }
