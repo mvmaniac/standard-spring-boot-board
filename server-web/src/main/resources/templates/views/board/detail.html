@@ -10,27 +10,25 @@
 </head>
 <body>
 
-<th:block th:ref="main">
-  <div class="container" th:object="${board}">
-    <h3 class="pt-3" th:text="*{title}"></h3>
-    <hr>
-    <dl>
-      <dt>게시판</dt>
-      <dd th:text="*{boardType}"></dd>
+<div th:ref="main" th:object="${board}" class="container">
+  <h3 class="pt-3" th:text="*{title}"></h3>
+  <hr>
+  <dl>
+    <dt>게시판</dt>
+    <dd th:text="*{boardType}"></dd>
 
-      <dt>부제목</dt>
-      <dd th:text="*{subTitle}"></dd>
+    <dt>부제목</dt>
+    <dd th:text="*{subTitle}"></dd>
 
-      <dt>내용</dt>
-      <dd th:text="*{content}"></dd>
+    <dt>내용</dt>
+    <dd th:text="*{content}"></dd>
 
-      <dt>등록일 / 수정일</dt>
-      <dd th:text="|*{createdDate} / *{updatedDate}|"></dd>
-    </dl>
-    <hr>
-    <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
-  </div>
-</th:block>
+    <dt>등록일 / 수정일</dt>
+    <dd th:text="|*{createdDate} / *{updatedDate}|"></dd>
+  </dl>
+  <hr>
+  <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
+</div>
 
 <script th:inline="javascript">
   $(function () {

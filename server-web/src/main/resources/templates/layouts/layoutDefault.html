@@ -11,7 +11,7 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}"/>
 
-  <th:block th:replace="${css}"/>
+  <style th:replace="${css}"></style>
 
   <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
 </head>
@@ -21,14 +21,14 @@
 
   <main th:insert="${main}"></main>
 
-  <footer class="text-muted" th:insert="~{layouts/fragments/footer :: footer}"></footer>
+  <footer th:insert="~{layouts/fragments/footer :: footer}" class="text-muted" ></footer>
 
   <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
   <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
   <script th:src="@{/js/common.js}"></script>
 
-  <th:block th:replace="${js}"/>
+  <script th:replace="${js}"></script>
   <!--// @formatter:on-->
 </body>
 </html>

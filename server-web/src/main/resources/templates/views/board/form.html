@@ -6,48 +6,46 @@
 </head>
 <body>
 
-<th:block th:ref="main">
-  <div class="container">
-    <input id="boardIdx" type="hidden" th:value="${board?.idx}">
-    <h3 class="pt-3">게시글 등록</h3>
-    <hr>
-    <div class="form-group">
-      <label for="boardType">게시판 선택</label>
-      <select id="boardType" class="form-control">
-        <option>--선택--</option>
-        <option th:value="notice" th:selected="${board?.boardType?.name eq 'notice'}">공지사항</option>
-        <option th:value="free" th:selected="${board?.boardType?.name eq 'free'}">자유게시판</option>
-      </select>
-      <div class="invalid-feedback d-block"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="boardTitle">제목</label>
-      <input id="boardTitle" type="text" class="form-control" required th:value="${board?.title}">
-      <div class="invalid-feedback d-block"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label></label>
-      <input id="boardSubTitle" type="text" class="form-control" required th:value="${board?.subTitle}">
-      <div class="invalid-feedback d-block"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="boardContent">내용<span class="text-muted">&nbsp;(Optional)</span></label>
-      <textarea id="boardContent" type="text" class="form-control" rows="5" th:text="${board?.content}"></textarea>
-    </div>
-
-    <div class="form-group mb-0 d-flex justify-content-between">
-      <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
-      <span>
-        <a href="#" id="btnInsert" class="btn btn-primary btn-sm" title="저장">저장</a>
-        <a href="#" id="btnUpdate" class="btn btn-info btn-sm" title="수정">수정</a>
-        <a href="#" id="btnDelete" class="btn btn-danger btn-sm" title="삭제">삭제</a>
-      </span>
-    </div>
+<div th:ref="main" class="container">
+  <input id="boardIdx" type="hidden" th:value="${board?.idx}">
+  <h3 class="pt-3">게시글 등록</h3>
+  <hr>
+  <div class="form-group">
+    <label for="boardType">게시판 선택</label>
+    <select id="boardType" class="form-control">
+      <option>--선택--</option>
+      <option th:value="notice" th:selected="${board?.boardType?.name eq 'notice'}">공지사항</option>
+      <option th:value="free" th:selected="${board?.boardType?.name eq 'free'}">자유게시판</option>
+    </select>
+    <div class="invalid-feedback d-block"></div>
   </div>
-</th:block>
+
+  <div class="form-group">
+    <label for="boardTitle">제목</label>
+    <input id="boardTitle" type="text" class="form-control" required th:value="${board?.title}">
+    <div class="invalid-feedback d-block"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label></label>
+    <input id="boardSubTitle" type="text" class="form-control" required th:value="${board?.subTitle}">
+    <div class="invalid-feedback d-block"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="boardContent">내용<span class="text-muted">&nbsp;(Optional)</span></label>
+    <textarea id="boardContent" type="text" class="form-control" rows="5" th:text="${board?.content}"></textarea>
+  </div>
+
+  <div class="form-group mb-0 d-flex justify-content-between">
+    <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
+    <span>
+      <a href="#" id="btnInsert" class="btn btn-primary btn-sm" title="저장">저장</a>
+      <a href="#" id="btnUpdate" class="btn btn-info btn-sm" title="수정">수정</a>
+      <a href="#" id="btnDelete" class="btn btn-danger btn-sm" title="삭제">삭제</a>
+    </span>
+  </div>
+</div>
 
 <script th:inline="javascript">
   $(function () {

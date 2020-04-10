@@ -2,8 +2,8 @@
 <!--suppress ThymeleafVariablesResolveInspection -->
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:fragment="header">
-  <div class="collapse bg-dark" id="navbarHeader" th:unless="${isNoNavHeader}">
+<div th:fragment="header">
+  <div th:unless="${isNoNavHeader}" id="navbarHeader" class="collapse bg-dark">
     <div class="container">
       <div class="row">
         <div class="col-sm-10 col-md-9 pt-4">
@@ -18,10 +18,12 @@
   </div>
   <div class="navbar navbar-dark bg-dark">
     <div class="container d-flex justify-content-between">
-      <a th:href="@{/}" class="navbar-brand d-flex align-items-center"><strong>DevFactory - 개발공장</strong></a>
+      <a th:href="@{/}" class="navbar-brand d-flex align-items-center">
+        <strong>DevFactory - 개발공장</strong>
+      </a>
       <div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
-                th:unless="${isNoNavHeader}">
+        <button th:unless="${isNoNavHeader}" class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#navbarHeader">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
@@ -39,10 +41,14 @@
       <!--                        <input type="submit" value="Logout" class="btn btn-primary btn-sm"/>-->
       <!--                    </form>-->
       <!--                </span>-->
-      <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입"><i class="fas fa-user"></i>&nbsp;회원가입</a>&nbsp;
-      <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인"><i class="fas fa-sign-in-alt"></i>&nbsp;로그인</a>
+      <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
+        <i class="fas fa-user"></i>&nbsp;회원가입
+      </a>&nbsp;
+      <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
+        <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
+      </a>
     </div>
   </div>
-</th:block>
+</div>
 
 </html>
