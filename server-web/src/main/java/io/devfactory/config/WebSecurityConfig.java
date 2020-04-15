@@ -2,39 +2,32 @@ package io.devfactory.config;
 
 import static io.devfactory.domain.enums.SocialType.GOOGLE;
 import static io.devfactory.domain.enums.SocialType.KAKAO;
+import static java.util.stream.Collectors.toList;
 
-import io.devfactory.domain.enums.SocialType;
-import io.devfactory.oauth.ClientResources;
-import io.devfactory.oauth.UserTokenService;
-import java.util.ArrayList;
+import io.devfactory.oauth.CustomOAuth2Provider;
 import java.util.List;
-import javax.servlet.Filter;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.CompositeFilter;
 
 @RequiredArgsConstructor
-@EnableOAuth2Client
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-  private final OAuth2ClientContext oAuth2ClientContext;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -43,17 +36,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     http
       .authorizeRequests()
-        .antMatchers("/", "/login/**")
+        .antMatchers("/", "/oauth2/**", "/login/**", "/sign-up/form", "/sign-in/form")
           .permitAll()
-      .anyRequest()
-        .authenticated()
+        .antMatchers("/google")
+          .hasAnyAuthority(GOOGLE.getRoleType())
+        .antMatchers("/kakao")
+          .hasAnyAuthority(KAKAO.getRoleType())
+        .anyRequest()
+          .authenticated()
+        .and()
+      .oauth2Login()
+        .defaultSuccessUrl("/loginSuccess")
+        .failureUrl("/loginFailure")
         .and()
       .headers()
         .frameOptions()
           .disable()
         .and()
       .exceptionHandling()
-        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/sign-in/form"))
         .and()
       .formLogin()
         .successForwardUrl("/boards")
@@ -65,7 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .invalidateHttpSession(true)
         .and()
       .addFilterBefore(filter, CsrfFilter.class)
-      .addFilterBefore(oauth2Filter(), BasicAuthenticationFilter.class)
       .csrf()
         .disable();
     // @formatter:on
@@ -77,53 +77,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public FilterRegistrationBean<Filter> oauth2ClientFilterRegistration(
-    OAuth2ClientContextFilter filter) {
-    final FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+  public ClientRegistrationRepository clientRegistrationRepository(
+    OAuth2ClientProperties oAuth2ClientProperties,
+    @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId) {
 
-    registrationBean.setFilter(filter);
-    registrationBean.setOrder(-100);
+    final List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration()
+      .keySet()
+      .stream()
+      .map(client -> getRegistration(oAuth2ClientProperties, client))
+      .filter(Objects::nonNull)
+      .collect(toList());
 
-    return registrationBean;
+    registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
+      .clientId(kakaoClientId)
+      .clientSecret("test") // 필요 없는 값이지만 null이면 실행이 안 되므로 임시값을 넣음
+      .jwkSetUri("test") // 필요 없는 값이지만 null이면 실행이 안 되므로 임시값을 넣음
+      .build());
+
+    return new InMemoryClientRegistrationRepository(registrations);
   }
 
-  @Bean
-  @ConfigurationProperties("google")
-  public ClientResources google() {
-    return new ClientResources();
-  }
+  private ClientRegistration getRegistration(OAuth2ClientProperties clientProperties,
+    String client) {
 
-  @Bean
-  @ConfigurationProperties("kakao")
-  public ClientResources kakao() {
-    return new ClientResources();
-  }
+    if ("google".equals(client)) {
+      final Registration registration = clientProperties.getRegistration().get("google");
+      return CommonOAuth2Provider.GOOGLE.getBuilder(client)
+        .clientId(registration.getClientId())
+        .clientSecret(registration.getClientSecret())
+        .scope("email", "profile")
+        .build();
+    }
 
-  private Filter oauth2Filter() {
-    final CompositeFilter filter = new CompositeFilter();
-
-    final List<Filter> filters = new ArrayList<>();
-    filters.add(oauth2Filter(google(), "/login/google", GOOGLE));
-    filters.add(oauth2Filter(kakao(), "/login/kakao", KAKAO));
-
-    filter.setFilters(filters);
-    return filter;
-  }
-
-  private Filter oauth2Filter(ClientResources client, String path, SocialType socialType) {
-    final OAuth2ClientAuthenticationProcessingFilter filter =
-      new OAuth2ClientAuthenticationProcessingFilter(path);
-    final OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(client.getClient(),
-      oAuth2ClientContext);
-
-    filter.setRestTemplate(restTemplate);
-    filter.setTokenServices(new UserTokenService(client, socialType));
-    filter.setAuthenticationSuccessHandler((request, response, authentication) -> response
-      .sendRedirect("/" + socialType.getValue() + "/complete"));
-    filter.setAuthenticationFailureHandler(
-      (request, response, exception) -> response.sendRedirect("/error"));
-
-    return filter;
+    return null;
   }
 
 }

@@ -19,8 +19,17 @@ spring:
         use_sql_comments: true
         #default_batch_fetch_size: 100
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(i1DILU4hKyzu6tKYchaRXo1oxrs7LY5j+hCsQDyP2vhQ1Hk7isEGWaZ9N2/HWgTknE0FiJokrz2jILTEtar8SRsCCZQ0u2BZFbst/k8yt2sUl5dzHFPmRw==)
+            client-secret: ENC(ztsHqRlsxX68esRFf9NKJx3AKpTDazdkUPqsQf3g/xEm7BJD8Kzc7Q==)
+
 logging:
   level:
+    org.springframework: debug
     io.devfactory: debug
     org.hibernate.SQL: debug
 
@@ -33,18 +42,7 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
-google:
-  client:
-    clientId: ENC(i1DILU4hKyzu6tKYchaRXo1oxrs7LY5j+hCsQDyP2vhQ1Hk7isEGWaZ9N2/HWgTknE0FiJokrz2jILTEtar8SRsCCZQ0u2BZFbst/k8yt2sUl5dzHFPmRw==)
-    clientSecret: ENC(ztsHqRlsxX68esRFf9NKJx3AKpTDazdkUPqsQf3g/xEm7BJD8Kzc7Q==)
-    accsssTokenUri: https://accounts.google.com/o/oauth2/token
-    userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
-    scope: profile, email
-
-kakao:
-  client:
-    clientId: ENC(ixrvi1Msas4zcsyuwb94n2KMhPzdbexhJqwf/8CkhsWQbs8jZyco2gHjA6xOJL64)
-    accessTokenUri: https://kauth.kakao.com/oauth/token
-    userAuthorizationUri: https://kauth.kakao.com/oauth/authorize
-  resource:
-    userInfoUri: https://kapi.kakao.com/v1/user/me
+custom:
+  oauth2:
+    kakao:
+      client-id: ENC(ixrvi1Msas4zcsyuwb94n2KMhPzdbexhJqwf/8CkhsWQbs8jZyco2gHjA6xOJL64)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="error(main, title, js)">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="error(main, title)">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +18,6 @@
   <main th:insert="${main}"></main>
 
   <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
-  <script th:replace="${js}"></script>
   <!--// @formatter:on-->
 </body>
 </html>

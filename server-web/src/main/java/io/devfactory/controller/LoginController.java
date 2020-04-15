@@ -5,9 +5,11 @@ import static io.devfactory.common.util.FunctionUtils.redirect;
 
 import io.devfactory.common.annotation.SocialMember;
 import io.devfactory.domain.Member;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@Slf4j
 @Controller
 public class LoginController {
 
@@ -16,9 +18,21 @@ public class LoginController {
     return "views/sign/signIn";
   }
 
-  @GetMapping(value = "/{google|kakao}/complete")
-  public String loginComplete(@SocialMember Member member) {
+  // oauth2 로그인 성공 시
+  @GetMapping("/loginSuccess")
+  public String loginSuccess(@SocialMember Member member) {
+    log.debug("[dev] loginSuccess...");
+    log.debug("[dev] member: {}, {}, {}, {}, {}, {}", member.getIdx(), member.getEmail(),
+      member.getName(), member.getPassword(), member.getPrincipal(), member.getSocialType());
+
     return redirect.apply("/boards");
+  }
+
+  // oauth2 로그인 실패 시
+  @GetMapping("/loginFailure")
+  public String loginFailure() {
+    log.debug("[dev] loginFailure...");
+    return redirect.apply("/sign-in/form");
   }
 
 }

@@ -138,6 +138,11 @@ body {
   background-color: #3b5998;
 }
 
+.btn-kakao {
+  color: white;
+  background-color: #fee500;
+}
+
 .hand {
   cursor: pointer;
 }

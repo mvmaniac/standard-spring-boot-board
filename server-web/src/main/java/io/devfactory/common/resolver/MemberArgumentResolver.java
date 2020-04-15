@@ -18,7 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -46,34 +46,36 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     final HttpSession session = ((ServletRequestAttributes) RequestContextHolder
       .currentRequestAttributes()).getRequest().getSession();
-    final Member member = (Member) session.getAttribute("member");
 
-    return getMember(member, session);
+    final Member member = (Member) session.getAttribute("member");
+    final Member findMember = getMember(member, session);
+
+    log.debug("[dev] resolveArgument...{}", findMember);
+    return findMember;
   }
 
   private Member getMember(Member member, HttpSession session) {
     try {
       if (Objects.isNull(member)) {
-        final OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder
+        final OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder
           .getContext().getAuthentication();
 
-        final HashMap<String, String> map = (HashMap<String, String>) authentication.getDetails();
-        Member convertMember = convertMember(
-          String.valueOf(authentication.getAuthorities().toArray()[0]), map);
+        final Map<String, Object> map = authentication.getPrincipal().getAttributes();
+        Member convertMember = convertMember(authentication.getAuthorizedClientRegistrationId(), map);
 
         if (Objects.isNull(convertMember)) {
           // TODO: 에러 던지기
           return convertMember;
         }
 
-        final Member findMember = memberRepository.findMemberByEmail(convertMember.getEmail())
+        member = memberRepository.findMemberByEmail(convertMember.getEmail())
           .orElseGet(() -> {
             log.debug("[dev] member save...");
             return memberRepository.save(convertMember);
           });
 
-        setRoleIfNotSame(findMember, authentication, map);
-        session.setAttribute("member", findMember);
+        setRoleIfNotSame(member, authentication, map);
+        session.setAttribute("member", member);
       }
     } catch (ClassCastException e) {
       return member;
@@ -82,38 +84,38 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
     return member;
   }
 
-  private Member convertMember(String authority, HashMap<String, String> map) {
-    if (GOOGLE.isEquals(authority)) {
+  private Member convertMember(String authority, Map<String, Object> map) {
+    if (GOOGLE.getValue().equals(authority)) {
       return getModernMember(GOOGLE, map);
-    } else if (KAKAO.isEquals(authority)) {
+    } else if (KAKAO.getValue().equals(authority)) {
       return getKakaoMember(map);
     }
 
     return null;
   }
 
-  private Member getModernMember(SocialType socialType, Map<String, String> map) {
+  private Member getModernMember(SocialType socialType, Map<String, Object> map) {
     return Member.create()
-      .name(map.get("name"))
-      .email(map.get("email"))
-      .principal(map.get("id"))
+      .name(String.valueOf(map.get("name")))
+      .email(String.valueOf(map.get("email")))
+      .principal(String.valueOf(map.get("id")))
       .socialType(socialType)
       .build();
   }
 
-  private Member getKakaoMember(Map<String, String> map) {
-    final Map<String, String> properties = (HashMap<String, String>) (Object) map.get("properties");
+  private Member getKakaoMember(Map<String, Object> map) {
+    final Map<String, String> properties = (HashMap<String, String>) map.get("properties");
 
     return Member.create()
       .name(properties.get("nickname"))
-      .email(map.get("kaccount_email"))
-      .principal(map.get("id"))
+      .email(String.valueOf(map.get("kaccount_email")))
+      .principal(String.valueOf(map.get("id")))
       .socialType(KAKAO)
       .build();
   }
 
-  private void setRoleIfNotSame(Member member, OAuth2Authentication authentication,
-    Map<String, String> map) {
+  private void setRoleIfNotSame(Member member, OAuth2AuthenticationToken authentication,
+    Map<String, Object> map) {
 
     final String roleType = member.getSocialType().getRoleType();
     final SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleType);

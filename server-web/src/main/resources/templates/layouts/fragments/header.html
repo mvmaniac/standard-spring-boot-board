@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!--suppress ThymeleafVariablesResolveInspection -->
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="header">
   <div th:unless="${isNoNavHeader}" id="navbarHeader" class="collapse bg-dark">
@@ -34,19 +35,23 @@
 
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container d-flex justify-content-end">
-      <!--                <span sec:authorize="isAuthenticated()" sec>-->
-      <!--                    <span class="text-white" th:text="${#authentication.principal.info.fullName}"></span>&nbsp;-->
-      <!--                    <form method="post" th:action="@{/logout}" class="d-inline-block">-->
-      <!--                        &lt;!&ndash; csrf 를 활성화 하면 logout 은 post 로 해야 함 &ndash;&gt;-->
-      <!--                        <input type="submit" value="Logout" class="btn btn-primary btn-sm"/>-->
-      <!--                    </form>-->
-      <!--                </span>-->
-      <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
-        <i class="fas fa-user"></i>&nbsp;회원가입
-      </a>&nbsp;
-      <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
-        <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
-      </a>
+      <span sec:authorize="isAuthenticated()">
+          <span class="text-white" th:text="|${session.member.name}님 로그인|"></span>
+          &nbsp;
+          <form method="post" th:action="@{/logout}" class="d-inline-block">
+              <!-- csrf 를 활성화 하면 logout 은 post 로 해야 함 -->
+              <input type="submit" value="Logout" class="btn btn-primary btn-sm"/>
+          </form>
+      </span>
+
+      <span sec:authorize="!isAuthenticated()">
+        <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
+          <i class="fas fa-user"></i>&nbsp;회원가입
+        </a>&nbsp;
+        <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
+          <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
+        </a>
+      </span>
     </div>
   </div>
 </div>
