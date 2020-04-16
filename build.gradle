@@ -53,3 +53,22 @@ subprojects {
         implementation 'org.apache.commons:commons-lang3:3.10'
     }
 }
+
+project(':server-batch') {
+    dependencies {
+        implementation project(':common')
+    }
+}
+
+project(':server-rest') {
+    dependencies {
+        implementation project(':common')
+    }
+}
+
+
+project(':server-web') {
+    dependencies {
+        implementation project(':common')
+    }
+}

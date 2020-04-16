@@ -6,4 +6,4 @@ pluginManagement {
 
 rootProject.name = 'standard-spring-boot-board'
 
-include 'server-batch', 'server-rest', 'server-web'
+include 'server-batch', 'server-rest', 'server-web', 'common'
