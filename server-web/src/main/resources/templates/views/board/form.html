@@ -28,29 +28,96 @@
 
   <div class="form-group">
     <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label></label>
-    <input id="boardSubTitle" type="text" class="form-control" required th:value="${board?.subTitle}">
+    <input id="boardSubTitle" type="text" class="form-control" required
+           th:value="${board?.subTitle}">
     <div class="invalid-feedback d-block"></div>
   </div>
 
   <div class="form-group">
     <label for="boardContent">내용<span class="text-muted">&nbsp;(Optional)</span></label>
-    <textarea id="boardContent" type="text" class="form-control" rows="5" th:text="${board?.content}"></textarea>
+    <textarea id="boardContent" type="text" class="form-control" rows="5"
+              th:text="${board?.content}"></textarea>
   </div>
 
   <div class="form-group mb-0 d-flex justify-content-between">
     <span><a href="#" id="btnList" class="btn btn-secondary btn-sm" title="목록으로">목록으로</a></span>
     <span>
-      <a href="#" id="btnInsert" class="btn btn-primary btn-sm" title="저장">저장</a>
-      <a href="#" id="btnUpdate" class="btn btn-info btn-sm" title="수정">수정</a>
-      <a href="#" id="btnDelete" class="btn btn-danger btn-sm" title="삭제">삭제</a>
+      <a href="javascript:void(0)" id="btnInsert" class="btn btn-primary btn-sm" title="저장"
+         th:unless="${board?.idx}">저장</a>
+      <a href="javascript:void(0)" id="btnUpdate" class="btn btn-info btn-sm" title="수정"
+         th:if="${board?.idx}">수정</a>
+      <a href="javascript:void(0)" id="btnDelete" class="btn btn-danger btn-sm" title="삭제"
+         th:if="${board?.idx}">삭제</a>
     </span>
   </div>
 </div>
 
+<!-- js 단은 하나로 처리함... -->
 <script th:inline="javascript">
   $(function () {
     $("#btnList").click(function () {
       location.href = '[(@{/boards})]';
+    });
+
+    $("#btnInsert").click(function () {
+      var jsonData = JSON.stringify({
+        title: $('#boardTitle').val(),
+        subTitle: $('#boardSubTitle').val(),
+        content: $('#boardContent').val(),
+        boardType: $('#boardType option:selected').val()
+      });
+
+      $.ajax({
+        url: 'http://localhost:8081/api/boards',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: jsonData,
+        success: function (response, textStatus, jqXHR) {
+          console.log(response);
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.error(textStatus, error);
+        }
+      });
+    });
+
+    $("#btnUpdate").click(function () {
+      var jsonData = JSON.stringify({
+        title: $('#boardTitle').val(),
+        subTitle: $('#boardSubTitle').val(),
+        content: $('#boardContent').val(),
+        boardType: $('#boardType option:selected').val()
+      });
+
+      $.ajax({
+        url: 'http://localhost:8081/api/boards' + $('#boardIdx').val(),
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: jsonData,
+        success: function (response, textStatus, jqXHR) {
+          console.log(response);
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.error(textStatus, error);
+        }
+      });
+    });
+
+    $("#btnDelete").click(function () {
+      $.ajax({
+        url: 'http://localhost:8081/api/boards' + $('#boardIdx').val(),
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response, textStatus, jqXHR) {
+          console.log(response);
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.error(textStatus, error);
+        }
+      });
     });
   });
 </script>

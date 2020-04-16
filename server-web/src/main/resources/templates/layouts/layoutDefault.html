@@ -15,8 +15,9 @@
 
   <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
 </head>
+
+<!--/* // @formatter:off */-->
 <body>
-  <!--// @formatter:off-->
   <header th:insert="~{layouts/fragments/header :: header}"></header>
 
   <main th:insert="${main}"></main>
@@ -29,6 +30,7 @@
   <script th:src="@{/js/common.js}"></script>
 
   <script th:replace="${js}"></script>
-  <!--// @formatter:on-->
 </body>
+<!--/* // @formatter:on */-->
+
 </html>

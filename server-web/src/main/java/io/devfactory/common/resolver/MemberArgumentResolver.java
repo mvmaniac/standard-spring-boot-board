@@ -42,7 +42,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
   @Override
   public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-    NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
     final HttpSession session = ((ServletRequestAttributes) RequestContextHolder
       .currentRequestAttributes()).getRequest().getSession();
@@ -120,7 +120,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
     final String roleType = member.getSocialType().getRoleType();
     final SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleType);
 
-    if (authentication.getAuthorities().contains(authority)) {
+    if (!authentication.getAuthorities().contains(authority)) {
       SecurityContextHolder.getContext()
         .setAuthentication(new UsernamePasswordAuthenticationToken(map, "N/A",
           AuthorityUtils.createAuthorityList(roleType)));

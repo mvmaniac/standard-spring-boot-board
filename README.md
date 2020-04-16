@@ -11,9 +11,17 @@
     * server-rest
     * server-batch
     * server-web
+* common 모듈은 domain과 repository만 있음
 * 최대한 이해한 부분만 적용함
 
 ### 3. TODO
 
-* form 로그인, 네이버 로그인 추가
-* oauth2 로그아웃 처리(?)
+* server-web
+    * form 로그인, 네이버 로그인 추가  
+    * oauth2 로그아웃 처리(?)  
+    * 기본 error -> errors 폴더 변경 시 처리   
+    * 목록 페이지에 ajax 처리
+    
+* server-rest 
+    * DTO 클래스 추가
+

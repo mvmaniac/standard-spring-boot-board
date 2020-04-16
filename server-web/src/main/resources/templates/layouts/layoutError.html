@@ -13,11 +13,12 @@
 
   <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
 </head>
-<body>
-  <!--// @formatter:off-->
-  <main th:insert="${main}"></main>
 
+<!--/* // @formatter:off */-->
+<body>
+  <main th:insert="${main}"></main>
   <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
-  <!--// @formatter:on-->
 </body>
+<!--/* // @formatter:on */-->
+
 </html>

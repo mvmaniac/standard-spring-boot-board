@@ -37,7 +37,6 @@ public class BoardController {
     return "views/board/form";
   }
 
-  // TODO: 추후 확인 후 제거
   @GetMapping("/boards/{idx}")
   public String boardView(@PathVariable("idx") Long idx, Model model) {
     final Board findBoard = boardService.findBoardByIdx(idx);

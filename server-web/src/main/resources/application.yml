@@ -9,16 +9,6 @@ spring:
     restart.enabled: false
     livereload.enabled: true
 
-  jpa:
-    show-sql: false
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        #default_batch_fetch_size: 100
-
   security:
     oauth2:
       client:
@@ -29,14 +19,8 @@ spring:
 
 logging:
   level:
-    org.springframework: debug
+    #org.springframework: debug
     io.devfactory: debug
-    org.hibernate.SQL: debug
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
 
 jasypt:
   encryptor:

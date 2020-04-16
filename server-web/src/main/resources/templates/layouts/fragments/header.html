@@ -10,8 +10,15 @@
         <div class="col-sm-10 col-md-9 pt-4">
           <h4 class="text-white">Boards</h4>
           <ul class="list-unstyled">
-            <li><a class="text-white" th:href="@{/boards}">전체 게시판</a></li>
-            <li><a class="text-white" th:href="@{/boards/my}">나의 게시판</a></li>
+            <li><a class="text-white" th:href="@{/boards}" title="전체 게시판">전체 게시판</a></li>
+            <li><a class="text-white" th:href="@{/boards/my}" title="나의 게시판">나의 게시판</a></li>
+          </ul>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="col-sm-10 col-md-9 pt-2">
+          <h4 class="text-white">Members Only</h4>
+          <ul class="list-unstyled">
+            <li><a class="text-white" th:href="@{/google}" title="구글 계정 전용">구글 계정 전용</a></li>
+            <li><a class="text-white" th:href="@{/kakao}" title="카카오 계정 전용">카카오 계정 전용</a></li>
           </ul>
         </div>
       </div>
@@ -19,7 +26,7 @@
   </div>
   <div class="navbar navbar-dark bg-dark">
     <div class="container d-flex justify-content-between">
-      <a th:href="@{/}" class="navbar-brand d-flex align-items-center">
+      <a th:href="@{/}" class="navbar-brand d-flex align-items-center" title="DevFactory - 개발공장">
         <strong>DevFactory - 개발공장</strong>
       </a>
       <div>
@@ -35,23 +42,24 @@
 
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container d-flex justify-content-end">
-      <span sec:authorize="isAuthenticated()">
-          <span class="text-white" th:text="|${session.member.name}님 로그인|"></span>
-          &nbsp;
-          <form method="post" th:action="@{/logout}" class="d-inline-block">
-              <!-- csrf 를 활성화 하면 logout 은 post 로 해야 함 -->
-              <input type="submit" value="Logout" class="btn btn-primary btn-sm"/>
-          </form>
-      </span>
-
-      <span sec:authorize="!isAuthenticated()">
+      <div sec:authorize="isAuthenticated()">
+        <span class="text-white align-middle" th:text="|${session?.member?.name}님 로그인|"></span>
+        &nbsp;
+        <form method="post" th:action="@{/logout}" class="d-inline-block">
+          <!--/* csrf 를 활성화 하면 logout 은 post 로 해야 함 */-->
+          <button type="submit" class="btn btn-success btn-sm">
+            <i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃
+          </button>
+        </form>
+      </div>
+      <div sec:authorize="!isAuthenticated()">
         <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
           <i class="fas fa-user"></i>&nbsp;회원가입
         </a>&nbsp;
         <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
           <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
         </a>
-      </span>
+      </div>
     </div>
   </div>
 </div>
