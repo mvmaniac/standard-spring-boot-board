@@ -41,7 +41,7 @@ public class BoardController {
   public String boardView(@PathVariable("idx") Long idx, Model model) {
     final Board findBoard = boardService.findBoardByIdx(idx);
     model.addAttribute("board", findBoard);
-    return "views/board/detail";
+    return "views/board/view";
   }
 
 }

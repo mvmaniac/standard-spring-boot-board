@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static io.devfactory.common.util.FunctionUtils.emptyEntity;
+import static io.devfactory.utils.FunctionUtils.emptyEntity;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

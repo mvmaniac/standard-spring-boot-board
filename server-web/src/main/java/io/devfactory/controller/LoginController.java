@@ -1,7 +1,7 @@
 package io.devfactory.controller;
 
 
-import static io.devfactory.common.util.FunctionUtils.redirect;
+import static io.devfactory.utils.FunctionUtils.redirect;
 
 import io.devfactory.common.annotation.SocialMember;
 import io.devfactory.domain.Member;

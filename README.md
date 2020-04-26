@@ -1,6 +1,6 @@
 # Standard Spring Boot Board
 
-### 1. 처음 배우는 스프링 부트 2 책의 실습 예제 기반
+### 1. 처음 배우는 스프링 부트 2 책 실습 예제 기반
 
 * [처음 배우는 스프링 부트 2](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791162241264&orderClick=LEa&Kc=# "처음 배우는 스프링 부트 2") 참고
 
@@ -20,8 +20,10 @@
     * form 로그인, 네이버 로그인 추가  
     * oauth2 로그아웃 처리(?)  
     * 기본 error -> errors 폴더 변경 시 처리   
-    * 목록 페이지에 ajax 처리
+    * 목록 페이지 ajax 처리(?)
     
 * server-rest 
     * DTO 클래스 추가
+    * HATEOAS 적용
+    * 회원인증
 

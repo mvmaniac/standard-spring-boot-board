@@ -5,6 +5,12 @@ spring:
   application:
     name: server-web
 
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/../data_user/board
+    username: sa
+    password: 1234
+
   devtools:
     restart.enabled: false
     livereload.enabled: true
@@ -21,6 +27,11 @@ logging:
   level:
     #org.springframework: debug
     io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
 
 jasypt:
   encryptor:

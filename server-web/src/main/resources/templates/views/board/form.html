@@ -13,9 +13,11 @@
   <div class="form-group">
     <label for="boardType">게시판 선택</label>
     <select id="boardType" class="form-control">
-      <option>--선택--</option>
-      <option th:value="notice" th:selected="${board?.boardType?.name eq 'notice'}">공지사항</option>
-      <option th:value="free" th:selected="${board?.boardType?.name eq 'free'}">자유게시판</option>
+      <option value="">--선택--</option>
+      <option th:each="boardType : ${T(io.devfactory.domain.enums.BoardType).values()}"
+              th:value="${boardType}" th:text="${boardType.value}"
+              th:selected="${board?.boardType eq boardType}">
+      </option>
     </select>
     <div class="invalid-feedback d-block"></div>
   </div>
@@ -27,7 +29,7 @@
   </div>
 
   <div class="form-group">
-    <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label></label>
+    <label for="boardSubTitle">부제목<span class="text-muted">&nbsp;(Optional)</span></label>
     <input id="boardSubTitle" type="text" class="form-control" required
            th:value="${board?.subTitle}">
     <div class="invalid-feedback d-block"></div>
@@ -46,8 +48,6 @@
          th:unless="${board?.idx}">저장</a>
       <a href="javascript:void(0)" id="btnUpdate" class="btn btn-info btn-sm" title="수정"
          th:if="${board?.idx}">수정</a>
-      <a href="javascript:void(0)" id="btnDelete" class="btn btn-danger btn-sm" title="삭제"
-         th:if="${board?.idx}">삭제</a>
     </span>
   </div>
 </div>
@@ -60,12 +60,11 @@
     });
 
     $("#btnInsert").click(function () {
-      var jsonData = JSON.stringify({
-        title: $('#boardTitle').val(),
-        subTitle: $('#boardSubTitle').val(),
-        content: $('#boardContent').val(),
-        boardType: $('#boardType option:selected').val()
-      });
+      var jsonData = getValidateData();
+
+      if (!jsonData) {
+        return;
+      }
 
       $.ajax({
         url: 'http://localhost:8081/api/boards',
@@ -74,6 +73,7 @@
         dataType: 'json',
         data: jsonData,
         success: function (response, textStatus, jqXHR) {
+          alert('게시글이 등록 되었습니다.');
           console.log(response);
         },
         error: function (jqXHR, textStatus, error) {
@@ -83,20 +83,20 @@
     });
 
     $("#btnUpdate").click(function () {
-      var jsonData = JSON.stringify({
-        title: $('#boardTitle').val(),
-        subTitle: $('#boardSubTitle').val(),
-        content: $('#boardContent').val(),
-        boardType: $('#boardType option:selected').val()
-      });
+      var jsonData = getValidateData();
+
+      if (!jsonData) {
+        return;
+      }
 
       $.ajax({
-        url: 'http://localhost:8081/api/boards' + $('#boardIdx').val(),
+        url: 'http://localhost:8081/api/boards/' + $('#boardIdx').val(),
         type: 'PUT',
         contentType: 'application/json',
         dataType: 'json',
         data: jsonData,
         success: function (response, textStatus, jqXHR) {
+          alert('게시글이 수정 되었습니다.');
           console.log(response);
         },
         error: function (jqXHR, textStatus, error) {
@@ -105,20 +105,25 @@
       });
     });
 
-    $("#btnDelete").click(function () {
-      $.ajax({
-        url: 'http://localhost:8081/api/boards' + $('#boardIdx').val(),
-        type: 'DELETE',
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (response, textStatus, jqXHR) {
-          console.log(response);
-        },
-        error: function (jqXHR, textStatus, error) {
-          console.error(textStatus, error);
-        }
+    function getValidateData() {
+      var $boardType = $('#boardType option:selected'),
+        jsonData;
+
+      if (!$boardType.val()) {
+        alert('게시판을 선택 해주세요.');
+        $boardType.parent().focus();
+        return null;
+      }
+
+      jsonData = JSON.stringify({
+        title: $('#boardTitle').val(),
+        subTitle: $('#boardSubTitle').val(),
+        content: $('#boardContent').val(),
+        boardType: $boardType.val()
       });
-    });
+
+      return jsonData;
+    }
   });
 </script>
 

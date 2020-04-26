@@ -1,4 +1,4 @@
-package io.devfactory.common.util;
+package io.devfactory.utils;
 
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;

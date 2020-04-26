@@ -1,6 +1,6 @@
 package io.devfactory.repository;
 
-import static io.devfactory.common.util.FunctionUtils.emptyEntity;
+import static io.devfactory.utils.FunctionUtils.emptyEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
