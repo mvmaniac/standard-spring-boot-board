@@ -50,6 +50,7 @@ allprojects {
 
 subprojects {
     dependencies {
+        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1'
         implementation 'org.apache.commons:commons-lang3:3.10'
     }
 }
