@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import io.devfactory.domain.base.BaseEntity;
+import io.devfactory.domain.enums.Grade;
 import io.devfactory.domain.enums.SocialType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +14,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import io.devfactory.domain.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -49,6 +53,14 @@ public class Member extends BaseEntity {
   @Enumerated(STRING)
   private SocialType socialType;
 
+  @Column(name = "member_grade", length = 10)
+  @Enumerated(STRING)
+  private Grade grade;
+
+  @Column(name = "member_status", length = 10)
+  @Enumerated(STRING)
+  private Status status;
+
   @Builder(builderMethodName = "create")
   public Member(String name, String password, String email, String principal,
     SocialType socialType) {
@@ -59,4 +71,32 @@ public class Member extends BaseEntity {
     this.socialType = socialType;
   }
 
+  public Member setInactive() {
+    status = Status.INACTIVE;
+    return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+
+    if (o == null || getClass() != o.getClass())
+      return false;
+
+    Member member = (Member) o;
+
+    return new EqualsBuilder()
+      .append(idx, member.idx)
+      .append(email, member.email)
+      .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+      .append(idx)
+      .append(email)
+      .toHashCode();
+  }
 }

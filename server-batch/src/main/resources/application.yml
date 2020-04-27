@@ -1,6 +1,36 @@
 server:
-  port: 8082
+  port: 8079
 
 spring:
   application:
-    name: 'server-batch'
+    name: server-batch
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/../data_user/board
+    username: sa
+    password: 1234
+
+    initialization-mode: always
+    platform: h2
+    data: classpath:sql/data-${spring.datasource.platform}.sql
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        #default_batch_fetch_size: 100
+
+logging:
+  level:
+    io.devfactory: debug
+    org.hibernate.SQL: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
