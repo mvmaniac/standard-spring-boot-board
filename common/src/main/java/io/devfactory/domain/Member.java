@@ -7,6 +7,8 @@ import static lombok.AccessLevel.PROTECTED;
 import io.devfactory.domain.base.BaseEntity;
 import io.devfactory.domain.enums.Grade;
 import io.devfactory.domain.enums.SocialType;
+import io.devfactory.domain.enums.Status;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -14,12 +16,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import io.devfactory.domain.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.data.domain.Persistable;
 
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -30,7 +32,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
   }
 )
 @Entity
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements Persistable<Long> {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
@@ -99,4 +101,17 @@ public class Member extends BaseEntity {
       .append(email)
       .toHashCode();
   }
+
+  @Override
+  public Long getId() {
+    System.out.println("[dev] getId");
+    return idx;
+  }
+
+  @Override
+  public boolean isNew() {
+    System.out.println("[dev] isNew: "+ Objects.isNull(getCreatedDate()));
+    return Objects.isNull(getCreatedDate());
+  }
+
 }

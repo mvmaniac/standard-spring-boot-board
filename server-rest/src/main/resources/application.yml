@@ -24,8 +24,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
-        #default_batch_fetch_size: 100
+        use_sql_comments: true,
+#        jdbc.batch_size: 200 # 배치사이즈 설정
+#        jdbc.batch_versioned_data: true # 에러가 났을때 잘못된 행수 반환 여부
+#        order_inserts: true # insert 구문을 묶어서 일괄처리 함
+#        order_updates: true # update 구문을 묶어서 일괄처리함
+#        default_batch_fetch_size: 100
 
 logging:
   level:

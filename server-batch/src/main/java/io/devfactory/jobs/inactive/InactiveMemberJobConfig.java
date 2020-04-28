@@ -2,24 +2,43 @@ package io.devfactory.jobs.inactive;
 
 import io.devfactory.domain.Member;
 import io.devfactory.domain.enums.Status;
+import io.devfactory.jobs.inactive.listener.InactiveMemberJobListener;
+import io.devfactory.jobs.inactive.listener.InactiveMemberStepListener;
 import io.devfactory.jobs.readers.QueueItemReader;
 import io.devfactory.repository.MemberRepository;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 @RequiredArgsConstructor
 @Configuration
 public class InactiveMemberJobConfig {
+
+  private static final int CHUNK_SIZE = 10;
+  private final EntityManagerFactory entityManagerFactory;
 
   private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
@@ -27,26 +46,72 @@ public class InactiveMemberJobConfig {
   private final MemberRepository memberRepository;
 
   @Bean
-  public Job inactiveMemberJob(Step inactiveMemberStep) {
+  public TaskExecutor taskExecutor() {
+    return new SimpleAsyncTaskExecutor("Batch-Task");
+  }
+
+  @Bean
+  public Job inactiveMemberJob(InactiveMemberJobListener inactiveMemberJobListener,
+    Step inactiveMemberStep) {
     return jobBuilderFactory.get("inactiveMemberJob")
       .preventRestart()
+      .listener(inactiveMemberJobListener)
       .start(inactiveMemberStep)
       .build();
   }
 
   @Bean
-  public Step inactiveMemberStep() {
-    return stepBuilderFactory.get("inactiveMemberStep")
-      .<Member, Member>chunk(10)
-      .reader(this.inactiveMemberReader())
-      .processor(this.inactiveMemberProcessor())
-      .writer(this.inactiveMemberWriter())
+  public Job inactiveMemberJobFlow(InactiveMemberJobListener inactiveMemberJobListener,
+    Flow inactiveMemberFlow) {
+    return jobBuilderFactory.get("inactiveMemberJobFlow")
+      .preventRestart()
+      .listener(inactiveMemberJobListener)
+      .start(inactiveMemberFlow)
+      .end()
       .build();
   }
 
-  @StepScope
   @Bean
-  public QueueItemReader<Member> inactiveMemberReader() {
+  public Step inactiveMemberStep(InactiveMemberStepListener inactiveMemberStepListener,
+    JpaPagingItemReader<Member> inactiveMemberJpaReader) {
+    return stepBuilderFactory.get("inactiveMemberStep")
+      .<Member, Member>chunk(CHUNK_SIZE)
+      .reader(inactiveMemberJpaReader)
+      .processor(this.inactiveMemberProcessor())
+      .writer(this.inactiveMemberJpaWriter())
+      .listener(inactiveMemberStepListener)
+      .taskExecutor(taskExecutor())
+        .throttleLimit(2)
+      .build();
+  }
+
+  @Bean
+  public Flow inactiveMemberFlow(Step inactiveMemberStep) {
+    FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("inactiveMemberFlow");
+    return flowBuilder
+      .start(new InactiveMemberJobExecutionDecider())
+      .on(FlowExecutionStatus.FAILED.getName())
+      .end()
+      .on(FlowExecutionStatus.COMPLETED.getName())
+        .to(inactiveMemberStep)
+      .end();
+  }
+
+  // 이미 구현되어 있는 ListItemReader 를 사용하는 방법 
+  @Bean
+  @StepScope
+  public ListItemReader<Member> inactiveMemberListItemReader() {
+    final List<Member> oldMembers = memberRepository
+      .findMembersByUpdatedDateBeforeAndStatusEquals(LocalDateTime.now().minusYears(1),
+        Status.ACTIVE);
+
+    return new ListItemReader<>(oldMembers);
+  }
+
+  // QueueItemReader 라는 ItemReader 를 사용하는 방법
+  @Bean
+  @StepScope
+  public QueueItemReader<Member> inactiveMemberCustomReader() {
     final List<Member> oldMembers = memberRepository
       .findMembersByUpdatedDateBeforeAndStatusEquals(LocalDateTime.now().minusYears(1),
         Status.ACTIVE);
@@ -54,12 +119,52 @@ public class InactiveMemberJobConfig {
     return new QueueItemReader<>(oldMembers);
   }
 
-  public ItemProcessor<Member, Member> inactiveMemberProcessor() {
-    return Member::setInactive;
+  @Bean(destroyMethod = "")
+  @StepScope
+  public JpaPagingItemReader<Member> inactiveMemberJpaReader(
+    @Value("#{jobParameters[nowDate]}") Date nowDate) {
+
+    @SuppressWarnings("squid:S110") final JpaPagingItemReader<Member> jpaPagingItemReader = new JpaPagingItemReader<>() {
+      @Override
+      public int getPage() {
+        return 0;
+      }
+    };
+
+    final LocalDateTime now = LocalDateTime.ofInstant(nowDate.toInstant(), ZoneId.systemDefault());
+
+    jpaPagingItemReader.setQueryString(
+      "select m from Member as m where m.updatedDate < :updatedDate and m.status = :status");
+
+    Map<String, Object> paramMap = new HashMap<>();
+    paramMap.put("updatedDate", now.minusYears(1));
+    paramMap.put("status", Status.ACTIVE);
+
+    jpaPagingItemReader.setParameterValues(paramMap);
+    jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory);
+    jpaPagingItemReader.setPageSize(CHUNK_SIZE);
+
+    return jpaPagingItemReader;
   }
 
-  public ItemWriter<Member> inactiveMemberWriter() {
+  private ItemProcessor<Member, Member> inactiveMemberProcessor() {
+    return (m) -> {
+      System.out.println("[dev] processor....1" + m);
+      m.setInactive();
+      System.out.println("[dev] processor....2");
+      return m;
+    };
+  }
+
+  private ItemWriter<Member> inactiveMemberItemWriter() {
     return memberRepository::saveAll;
+  }
+
+  private JpaItemWriter<Member> inactiveMemberJpaWriter() {
+    final JpaItemWriter<Member> jpaItemWriter = new JpaItemWriter<>();
+    jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+    //jpaItemWriter.setUsePersist(true);
+    return jpaItemWriter;
   }
 
 }

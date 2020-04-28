@@ -1,25 +1,20 @@
 package io.devfactory.jobs.readers;
 
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import org.springframework.batch.item.ItemReader;
 
-// ItemReader를 직접 구현하여 사용하는 예제
-// ListItemReader 직접 사용해 됨
 public class QueueItemReader<T> implements ItemReader<T> {
 
-  private Queue<T> queue;
+  private final Queue<T> queue;
 
   public QueueItemReader(List<T> data) {
     this.queue = new LinkedList<>(data);
   }
 
   @Override
-  public T read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+  public T read() {
     return this.queue.poll();
   }
 

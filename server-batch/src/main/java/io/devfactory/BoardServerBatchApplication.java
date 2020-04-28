@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableBatchProcessing
 @SpringBootApplication
-public class ServerBatchApplication {
+public class BoardServerBatchApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ServerBatchApplication.class, args);
+    SpringApplication.run(BoardServerBatchApplication.class, args);
   }
 
 }
