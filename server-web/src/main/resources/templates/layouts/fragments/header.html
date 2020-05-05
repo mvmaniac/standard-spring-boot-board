@@ -3,65 +3,69 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="header">
-  <div th:unless="${isNoNavHeader}" id="navbarHeader" class="collapse bg-dark">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-10 col-md-9 pt-4">
-          <h4 class="text-white">Boards</h4>
-          <ul class="list-unstyled">
-            <li><a class="text-white" th:href="@{/boards}" title="전체 게시판">전체 게시판</a></li>
-            <li><a class="text-white" th:href="@{/boards/my}" title="나의 게시판">나의 게시판</a></li>
-          </ul>
+<!--/*/ <th:block th:fragment="header"> /*/-->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a th:href="@{/}" class="navbar-brand" href="#"><strong>DevFactory - 개발공장</strong></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div id="navbarMenu" class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a href="javascript:void(0)" data-toggle="dropdown" class="nav-link dropdown-toggle">Boards</a>
+        <div class="dropdown-menu">
+          <a th:href="@{/boards}" class="dropdown-item">전체 게시판</a>
+          <a th:href="@{/boards/my}" class="dropdown-item">나의 게시판</a>
         </div>
-        <div sec:authorize="isAuthenticated()" class="col-sm-10 col-md-9 pt-2">
-          <h4 class="text-white">Members Only</h4>
-          <ul class="list-unstyled">
-            <li><a class="text-white" th:href="@{/google}" title="구글 계정 전용">구글 계정 전용</a></li>
-            <li><a class="text-white" th:href="@{/kakao}" title="카카오 계정 전용">카카오 계정 전용</a></li>
-          </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a href="javascript:void(0)" data-toggle="dropdown"
+           class="nav-link dropdown-toggle">Members Only</a>
+        <div class="dropdown-menu">
+          <a th:href="@{/google}" class="dropdown-item">구글 계정 전용</a>
+          <a th:href="@{/kakao}" class="dropdown-item">카카오 계정 전용</a>
         </div>
+      </li>
+      <!--<li class="nav-item active">
+        <a class="nav-link" href="#"></a>
+      </li>-->
+    </ul>
+    <div class="input-group search-form">
+      <input type="text" id="searchText" class="form-control" placeholder="검색">
+      <label for="searchText"></label>
+
+      <div class="input-group-append">
+        <button class="btn btn-secondary" type="button"><i class="fas fa-search"></i></button>
       </div>
     </div>
   </div>
-  <div class="navbar navbar-dark bg-dark">
-    <div class="container d-flex justify-content-between">
-      <a th:href="@{/}" class="navbar-brand d-flex align-items-center" title="DevFactory - 개발공장">
-        <strong>DevFactory - 개발공장</strong>
-      </a>
-      <div>
-        <button th:unless="${isNoNavHeader}" class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarHeader">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </div>
+</nav>
+
+<hr class="bg-secondary my-0"/>
+
+<div class="navbar navbar-dark bg-dark shadow-sm d-flex justify-content-end">
+  <div sec:authorize="isAuthenticated()">
+    <span class="text-white align-middle" th:text="|${session?.member?.name}님 로그인|"></span>
+    &nbsp;
+    <form method="post" th:action="@{/logout}" class="d-inline-block">
+      <!--/* csrf 를 활성화 하면 logout 은 post 로 해야 함 */-->
+      <button type="submit" class="btn btn-success btn-sm">
+        <i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃
+      </button>
+    </form>
   </div>
-
-  <hr class="bg-secondary my-0"/>
-
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container d-flex justify-content-end">
-      <div sec:authorize="isAuthenticated()">
-        <span class="text-white align-middle" th:text="|${session?.member?.name}님 로그인|"></span>
-        &nbsp;
-        <form method="post" th:action="@{/logout}" class="d-inline-block">
-          <!--/* csrf 를 활성화 하면 logout 은 post 로 해야 함 */-->
-          <button type="submit" class="btn btn-success btn-sm">
-            <i class="fas fa-sign-out-alt"></i>&nbsp;로그아웃
-          </button>
-        </form>
-      </div>
-      <div sec:authorize="!isAuthenticated()">
-        <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
-          <i class="fas fa-user"></i>&nbsp;회원가입
-        </a>&nbsp;
-        <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
-          <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
-        </a>
-      </div>
-    </div>
+  <div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/sign-up/form}" class="btn btn-info btn-sm" title="회원가입">
+      <i class="fas fa-user"></i>&nbsp;회원가입
+    </a>&nbsp;
+    <a th:href="@{/sign-in/form}" class="btn btn-success btn-sm" title="로그인">
+      <i class="fas fa-sign-in-alt"></i>&nbsp;로그인
+    </a>
   </div>
 </div>
+<!--/*/ </th:block> /*/-->
 
 </html>

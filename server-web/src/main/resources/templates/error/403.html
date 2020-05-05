@@ -6,22 +6,18 @@
 </head>
 <body>
 
-<div th:ref="main" class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="error-template">
-        <h1>Oops!</h1>
-        <h2>403 - Forbidden</h2>
-        <div class="error-details">
-          죄송합니다. 권한이 없으시네요.
-        </div>
-        <div class="error-actions">
-          <a class="btn btn-primary btn-sm" th:href="@{/}"><i class="fas fa-home"></i>&nbsp;홈으로</a>
-        </div>
-      </div>
+<section th:ref="main">
+  <div class="error-template">
+    <h1>Oops!</h1>
+    <h2>403 - Forbidden</h2>
+    <div class="error-details">
+      죄송합니다. 권한이 없으시네요.
+    </div>
+    <div class="error-actions">
+      <a class="btn btn-primary btn-sm" th:href="@{/}"><i class="fas fa-home"></i>&nbsp;홈으로</a>
     </div>
   </div>
-</div>
+</section>
 
 </body>
 </html>

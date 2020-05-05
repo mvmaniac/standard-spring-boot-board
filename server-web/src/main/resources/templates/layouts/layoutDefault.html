@@ -18,15 +18,15 @@
 
 <!--/* // @formatter:off */-->
 <body>
-  <header th:insert="~{layouts/fragments/header :: header}"></header>
+  <div class="wrap">
+    <header th:insert="~{layouts/fragments/header :: header}" class="header bg-dark"></header>
+    <main th:insert="${main}" role="main" class="main"></main>
+    <footer th:insert="~{layouts/fragments/footer :: footer}" class="footer"></footer>
+  </div>
 
-  <main th:insert="${main}"></main>
-
-  <footer th:insert="~{layouts/fragments/footer :: footer}" class="text-muted" ></footer>
-
+  <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
   <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
-  <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
   <script th:src="@{/js/common.js}"></script>
 
   <script th:replace="${js}"></script>

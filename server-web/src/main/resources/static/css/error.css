@@ -1,13 +1,8 @@
 .error-template {
-  padding: 40px 15px;
+  padding: 2rem;
   text-align: center;
 }
 
-.error-actions {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.error-actions .btn {
-  margin-right: 10px;
+.error-details {
+  margin: 1rem 0;
 }

@@ -2,26 +2,22 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       th:insert="~{layouts/layoutError :: error(~{::main}, ~{::title})}">
 <head>
-  <title>403</title>
+  <title>404</title>
 </head>
 <body>
 
-<div th:ref="main" class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="error-template">
-        <h1>Oops!</h1>
-        <h2>404 - Not Found</h2>
-        <div class="error-details">
-          죄송합니다. 없는 페이지네요.
-        </div>
-        <div class="error-actions">
-          <a class="btn btn-primary btn-sm" th:href="@{/}"><i class="fas fa-home"></i>&nbsp;홈으로</a>
-        </div>
-      </div>
+<section th:ref="main">
+  <div class="error-template">
+    <h1>Oops!</h1>
+    <h2>404 - Not Found</h2>
+    <div class="error-details">
+      죄송합니다. 없는 페이지네요.
+    </div>
+    <div class="error-actions">
+      <a class="btn btn-primary btn-sm" th:href="@{/}"><i class="fas fa-home"></i>&nbsp;홈으로</a>
     </div>
   </div>
-</div>
+</section>
 
 </body>
 </html>
