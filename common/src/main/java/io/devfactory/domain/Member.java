@@ -26,10 +26,10 @@ import org.springframework.data.domain.Persistable;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Table(
-  name = "tb_member",
-  uniqueConstraints = {
-    @UniqueConstraint(name = "uk_tb_member_01", columnNames = {"member_email"})
-  }
+    name = "tb_member",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_tb_member_01", columnNames = {"member_email"})
+    }
 )
 @Entity
 public class Member extends BaseEntity implements Persistable<Long> {
@@ -65,7 +65,7 @@ public class Member extends BaseEntity implements Persistable<Long> {
 
   @Builder(builderMethodName = "create")
   public Member(String name, String password, String email, String principal,
-    SocialType socialType) {
+      SocialType socialType) {
     this.name = name;
     this.password = password;
     this.email = email;
@@ -80,26 +80,28 @@ public class Member extends BaseEntity implements Persistable<Long> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
+    }
 
-    if (o == null || getClass() != o.getClass())
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
 
     Member member = (Member) o;
 
     return new EqualsBuilder()
-      .append(idx, member.idx)
-      .append(email, member.email)
-      .isEquals();
+        .append(idx, member.idx)
+        .append(email, member.email)
+        .isEquals();
   }
 
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-      .append(idx)
-      .append(email)
-      .toHashCode();
+        .append(idx)
+        .append(email)
+        .toHashCode();
   }
 
   @Override
@@ -110,7 +112,7 @@ public class Member extends BaseEntity implements Persistable<Long> {
 
   @Override
   public boolean isNew() {
-    System.out.println("[dev] isNew: "+ Objects.isNull(getCreatedDate()));
+    System.out.println("[dev] isNew: " + Objects.isNull(getCreatedDate()));
     return Objects.isNull(getCreatedDate());
   }
 

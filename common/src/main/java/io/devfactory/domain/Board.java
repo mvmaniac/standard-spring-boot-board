@@ -1,16 +1,24 @@
 package io.devfactory.domain;
 
-import io.devfactory.domain.base.BaseEntity;
-import io.devfactory.domain.enums.BoardType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+
+import io.devfactory.domain.base.BaseEntity;
+import io.devfactory.domain.enums.BoardType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -41,7 +49,8 @@ public class Board extends BaseEntity {
   private Member member;
 
   @Builder(builderMethodName = "create")
-  protected Board(String title, String subTitle, String content, BoardType boardType, Member member) {
+  protected Board(String title, String subTitle, String content, BoardType boardType,
+      Member member) {
     this.title = title;
     this.subTitle = subTitle;
     this.content = content;

@@ -1,12 +1,12 @@
 package io.devfactory.controller;
 
-import static io.devfactory.utils.FunctionUtils.emptyEntity;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import io.devfactory.domain.Board;
 import io.devfactory.repository.BoardRepository;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/boards")
@@ -35,12 +34,12 @@ public class BoardRestController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<PagedModel<Board>> getBoards(
-    @PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable) {
+      @PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable) {
 
     final Page<Board> boards = boardRepository.findAll(pageable);
 
     final PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(),
-      boards.getTotalElements());
+        boards.getTotalElements());
 
     final PagedModel<Board> pagedModel = new PagedModel<>(boards.getContent(), pageMetadata);
     pagedModel.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());

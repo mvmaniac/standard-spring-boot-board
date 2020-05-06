@@ -22,7 +22,7 @@ public class BoardController {
 
   @GetMapping("/boards")
   public String boardList(@PageableDefault(sort = {"idx"}, direction = DESC) Pageable pageable,
-    Model model) {
+      Model model) {
     final Page<Board> boards = boardService.findBoards(pageable);
 
     model.addAttribute("count", boards.getTotalElements());
