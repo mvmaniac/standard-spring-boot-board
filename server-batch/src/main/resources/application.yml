@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: server-batch
+    name: board-server-batch
 
   datasource:
     driver-class-name: org.h2.Driver

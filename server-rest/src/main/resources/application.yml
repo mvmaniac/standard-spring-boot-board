@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: server-rest
+    name: board-server-rest
 
   datasource:
     driver-class-name: org.h2.Driver
