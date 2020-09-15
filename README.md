@@ -1,6 +1,6 @@
 # Standard Spring Boot Board
 
-### 1. 처음 배우는 스프링 부트 2 책 실습 예제 기반
+### 1. 책 실습 예제 기반
 
 * [처음 배우는 스프링 부트 2](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791162241264&orderClick=LEa&Kc=# "처음 배우는 스프링 부트 2") 참고
 
