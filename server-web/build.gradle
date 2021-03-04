@@ -1,14 +1,14 @@
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-oauth2-client'
-    implementation 'org.springframework.security:spring-security-oauth2-jose'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.security:spring-security-oauth2-client'
+  implementation 'org.springframework.security:spring-security-oauth2-jose'
 
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.2'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+  implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.2'
 
-    implementation 'org.webjars:jquery:3.5.1'
-    implementation 'org.webjars:bootstrap:4.5.0'
-    implementation 'org.webjars:font-awesome:5.13.0'
+  implementation 'org.webjars:jquery:3.5.1'
+  implementation 'org.webjars:bootstrap:4.5.0'
+  implementation 'org.webjars:font-awesome:5.13.0'
 }

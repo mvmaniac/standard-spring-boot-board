@@ -1,71 +1,68 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.5.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-    id 'java'
+  id 'org.springframework.boot' version '2.4.3'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'java'
 }
 
 allprojects {
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'java'
+  apply plugin: 'org.springframework.boot'
+  apply plugin: 'io.spring.dependency-management'
+  apply plugin: 'java'
 
-    group = 'io.devfactory'
-    version = '0.0.1'
-    sourceCompatibility = JavaVersion.VERSION_15
-    targetCompatibility = JavaVersion.VERSION_15
+  group = 'io.devfactory'
+  version = '0.0.1'
+  sourceCompatibility = JavaVersion.VERSION_15
+  targetCompatibility = JavaVersion.VERSION_15
 
-    repositories {
-        mavenCentral()
-        jcenter()
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  configurations {
+    compileOnly {
+      extendsFrom annotationProcessor
     }
+  }
 
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
+  dependencies {
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    dependencies {
-        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  }
 
-        testImplementation('org.springframework.boot:spring-boot-starter-test') {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-    }
+  test {
+    useJUnitPlatform()
+  }
 }
 
 subprojects {
-    dependencies {
-        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1'
-        implementation 'org.apache.commons:commons-lang3:3.10'
-    }
+  dependencies {
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+  }
 }
 
 project(':server-batch') {
-    dependencies {
-        implementation project(':common')
-    }
+  dependencies {
+    implementation project(':common')
+  }
 }
 
 project(':server-rest') {
-    dependencies {
-        implementation project(':common')
-    }
+  dependencies {
+    implementation project(':common')
+  }
 }
 
-
 project(':server-web') {
-    dependencies {
-        implementation project(':common')
-    }
+  dependencies {
+    implementation project(':common')
+  }
 }
