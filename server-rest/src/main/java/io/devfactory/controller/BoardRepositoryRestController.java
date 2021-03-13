@@ -1,9 +1,5 @@
 package io.devfactory.controller;
 
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import io.devfactory.domain.Board;
 import io.devfactory.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +10,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.PagedModel.PageMetadata;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RequiredArgsConstructor
 @RepositoryRestController
@@ -32,7 +31,7 @@ public class BoardRepositoryRestController {
     final PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(),
       boards.getTotalElements());
 
-    final PagedModel<Board> pagedModel = new PagedModel<>(boards.getContent(), pageMetadata);
+    final PagedModel<Board> pagedModel = PagedModel.of(boards.getContent(), pageMetadata);
     pagedModel.add(linkTo(methodOn(BoardRepositoryRestController.class).getBoards(pageable)).withSelfRel());
 
     return ResponseEntity.ok(pagedModel);
