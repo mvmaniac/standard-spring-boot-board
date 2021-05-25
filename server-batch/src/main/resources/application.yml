@@ -6,19 +6,20 @@ spring:
     name: board-server-batch
 
   datasource:
-    driver-class-name: org.h2.Driver
     url: jdbc:h2:tcp://localhost/../data_user/board
     username: sa
     password: 1234
 
-    initialization-mode: always
-    platform: h2
-    data: classpath:sql/data-${spring.datasource.platform}.sql
+  sql:
+    init:
+      platform: h2
+      schema-locations: classpath:sql/schmea.sql
+      data-locations: classpath:sql/data-${spring.sql.init.platform}.sql
 
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
