@@ -1,12 +1,6 @@
 package io.devfactory.config;
 
-import static io.devfactory.domain.enums.SocialType.GOOGLE;
-import static io.devfactory.domain.enums.SocialType.KAKAO;
-import static java.util.stream.Collectors.toList;
-
 import io.devfactory.oauth.CustomOAuth2Provider;
-import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -24,6 +18,13 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import java.util.List;
+import java.util.Objects;
+
+import static io.devfactory.domain.enums.SocialType.GOOGLE;
+import static io.devfactory.domain.enums.SocialType.KAKAO;
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Configuration
