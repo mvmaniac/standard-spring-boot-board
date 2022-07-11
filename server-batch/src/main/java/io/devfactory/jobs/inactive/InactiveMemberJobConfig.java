@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class InactiveMemberJobConfig {
@@ -148,10 +150,10 @@ public class InactiveMemberJobConfig {
   }
 
   private ItemProcessor<Member, Member> inactiveMemberProcessor() {
-    return (m) -> {
-      System.out.println("[dev] processor....1" + m);
+    return m -> {
+      log.debug("[dev] processor....1 {}", m);
       m.setInactive();
-      System.out.println("[dev] processor....2");
+      log.debug("[dev] processor....2");
       return m;
     };
   }

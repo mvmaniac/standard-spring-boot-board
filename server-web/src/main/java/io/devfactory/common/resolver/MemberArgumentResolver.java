@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,8 +42,8 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
   }
 
   @Override
-  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-    NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+  public Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
+      @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
     final HttpSession session = ((ServletRequestAttributes) RequestContextHolder
       .currentRequestAttributes()).getRequest().getSession();
