@@ -1,24 +1,28 @@
 package io.devfactory.config;
 
 import io.devfactory.oauth.CustomOAuth2Provider;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,15 +32,27 @@ import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    final CharacterEncodingFilter filter = new CharacterEncodingFilter();
-
+  @Order(0)
+  @Bean
+  public SecurityFilterChain resources(HttpSecurity http) throws Exception {
     // @formatter:off
-    http
-      .authorizeRequests()
+    return http
+      .requestMatchers(matchers -> matchers.antMatchers(StaticResource.getResources()))
+      .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+      .requestCache(RequestCacheConfigurer::disable)
+      .securityContext(AbstractHttpConfigurer::disable)
+      .sessionManagement(AbstractHttpConfigurer::disable)
+    .build();
+    // @formatter:on
+  }
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // @formatter:off
+    return http
+      .authorizeRequests(authorize -> authorize
         .antMatchers("/", "/oauth2/**", "/login/**", "/sign-up/form", "/sign-in/form")
           .permitAll()
         .antMatchers("/google")
@@ -44,37 +60,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/kakao")
           .hasAnyAuthority(KAKAO.getRoleType())
         .anyRequest()
-          .authenticated()
-        .and()
-      .oauth2Login()
+          .authenticated())
+      .oauth2Login(oauth2 -> oauth2
         .defaultSuccessUrl("/loginSuccess")
-        .failureUrl("/loginFailure")
-        .and()
-      .headers()
-        .frameOptions()
-          .disable()
-        .and()
-      .exceptionHandling()
-        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/sign-in/form"))
-        .and()
-      .formLogin()
-        .successForwardUrl("/boards")
-        .and()
-      .logout()
+        .failureUrl("/loginFailure"))
+      .headers(headers -> headers.frameOptions().disable())
+      .exceptionHandling(exception -> exception
+        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/sign-in/form")))
+      .formLogin(form -> form.successForwardUrl("/boards"))
+      .logout(logout -> logout
         .logoutUrl("/logout")
         .logoutSuccessUrl("/")
         .deleteCookies("JSESSIONID")
-        .invalidateHttpSession(true)
-        .and()
-      .addFilterBefore(filter, CsrfFilter.class)
-      .csrf()
-        .disable();
+        .invalidateHttpSession(true))
+      .csrf(AbstractHttpConfigurer::disable)
+      .addFilterBefore(new CharacterEncodingFilter(), CsrfFilter.class)
+      .build();
     // @formatter:on
-  }
-
-  @Override
-  public void configure(WebSecurity web) {
-    web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
   }
 
   @Bean
@@ -111,6 +113,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     return null;
+  }
+
+  @Getter
+  public static class StaticResource {
+
+    private StaticResource() {
+      throw new IllegalStateException("Constructor not supported");
+    }
+
+    private static final String[] defaultResources = Arrays.stream(StaticResourceLocation.values())
+        .flatMap(StaticResourceLocation::getPatterns)
+        .toArray(String[]::new);
+
+    public static String[] getResources() {
+      return defaultResources;
+    }
+
+    public static String[] getResources(String... antPatterns) {
+      final var defaultResources = StaticResource.defaultResources;
+      final var resources = Arrays.copyOf(defaultResources, defaultResources.length + antPatterns.length);
+      System.arraycopy(antPatterns, 0, resources, defaultResources.length, antPatterns.length);
+      return resources;
+    }
+
   }
 
 }
