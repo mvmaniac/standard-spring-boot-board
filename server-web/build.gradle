@@ -6,7 +6,7 @@ dependencies {
   implementation 'org.springframework.security:spring-security-oauth2-jose'
 
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-  implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+  implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
   implementation 'org.webjars:jquery:3.6.0'
   implementation 'org.webjars:bootstrap:4.5.0'
