@@ -10,7 +10,7 @@ import io.devfactory.repository.MemberRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;

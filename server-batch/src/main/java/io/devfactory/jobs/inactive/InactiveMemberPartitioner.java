@@ -3,6 +3,8 @@ package io.devfactory.jobs.inactive;
 import io.devfactory.domain.enums.Grade;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.lang.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ public class InactiveMemberPartitioner implements Partitioner {
   private static final String GRADE = "grade";
   private static final String INACTIVE_MEMBER_TASK = "inactiveMemberTask";
 
+  @NonNull
   @Override
   public Map<String, ExecutionContext> partition(int gridSize) {
 

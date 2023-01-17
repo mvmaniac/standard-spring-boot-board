@@ -6,7 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import io.devfactory.domain.Board;
 import io.devfactory.repository.BoardRepository;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +41,7 @@ public class BoardRestController {
     final PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(),
         boards.getTotalElements());
 
-    final PagedModel<Board> pagedModel = new PagedModel<>(boards.getContent(), pageMetadata);
+    final PagedModel<Board> pagedModel = PagedModel.of(boards.getContent(), pageMetadata);
     pagedModel.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
 
     return ResponseEntity.ok(pagedModel);
