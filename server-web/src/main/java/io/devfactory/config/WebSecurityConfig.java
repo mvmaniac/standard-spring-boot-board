@@ -39,7 +39,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain resources(HttpSecurity http) throws Exception {
     // @formatter:off
     return http
-      .requestMatchers(matchers -> matchers.antMatchers(StaticResource.getResources()))
+      .securityMatchers(matcher -> matcher.requestMatchers(StaticResource.getResources()))
       .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
       .requestCache(RequestCacheConfigurer::disable)
       .securityContext(AbstractHttpConfigurer::disable)
@@ -52,12 +52,12 @@ public class WebSecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // @formatter:off
     return http
-      .authorizeRequests(authorize -> authorize
-        .antMatchers("/", "/oauth2/**", "/login/**", "/sign-up/form", "/sign-in/form")
+      .authorizeHttpRequests(authorize -> authorize
+        .requestMatchers("/", "/oauth2/**", "/login/**", "/sign-up/form", "/sign-in/form")
           .permitAll()
-        .antMatchers("/google")
+        .requestMatchers("/google")
           .hasAnyAuthority(GOOGLE.getRoleType())
-        .antMatchers("/kakao")
+        .requestMatchers("/kakao")
           .hasAnyAuthority(KAKAO.getRoleType())
         .anyRequest()
           .authenticated())

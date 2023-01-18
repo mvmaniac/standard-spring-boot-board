@@ -6,23 +6,18 @@ import io.devfactory.jobs.inactive.listener.InactiveMemberJobListener;
 import io.devfactory.jobs.inactive.listener.InactiveMemberStepListener;
 import io.devfactory.jobs.readers.QueueItemReader;
 import io.devfactory.repository.MemberRepository;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
@@ -33,6 +28,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,20 +45,22 @@ public class InactiveMemberJobConfig {
   private static final int CHUNK_SIZE = 10;
   private final EntityManagerFactory entityManagerFactory;
 
-  private final JobBuilderFactory jobBuilderFactory;
-  private final StepBuilderFactory stepBuilderFactory;
+  private final JobRepository jobRepository;
+  private final PlatformTransactionManager platformTransactionManager;
 
   private final MemberRepository memberRepository;
 
   @Bean
   public TaskExecutor taskExecutor() {
-    return new SimpleAsyncTaskExecutor("Batch-Task");
+    final var simpleAsyncTaskExecutor = new SimpleAsyncTaskExecutor("Batch-Task");
+    simpleAsyncTaskExecutor.setConcurrencyLimit(2);
+    return simpleAsyncTaskExecutor;
   }
 
   @Bean
   public Job inactiveMemberJob(InactiveMemberJobListener inactiveMemberJobListener,
     Step inactiveMemberStep) {
-    return jobBuilderFactory.get("inactiveMemberJob")
+    return new JobBuilder("inactiveMemberJob", jobRepository)
       .preventRestart()
       .listener(inactiveMemberJobListener)
       .start(inactiveMemberStep)
@@ -65,7 +70,7 @@ public class InactiveMemberJobConfig {
   @Bean
   public Job inactiveMemberJobFlow(InactiveMemberJobListener inactiveMemberJobListener,
     Flow inactiveMemberFlow) {
-    return jobBuilderFactory.get("inactiveMemberJobFlow")
+    return new JobBuilder("inactiveMemberJobFlow", jobRepository)
       .preventRestart()
       .listener(inactiveMemberJobListener)
       .start(inactiveMemberFlow)
@@ -76,14 +81,13 @@ public class InactiveMemberJobConfig {
   @Bean
   public Step inactiveMemberStep(InactiveMemberStepListener inactiveMemberStepListener,
     JpaPagingItemReader<Member> inactiveMemberJpaReader) {
-    return stepBuilderFactory.get("inactiveMemberStep")
-      .<Member, Member>chunk(CHUNK_SIZE)
+    return new StepBuilder("inactiveMemberStep", jobRepository)
+      .<Member, Member>chunk(CHUNK_SIZE, platformTransactionManager)
       .reader(inactiveMemberJpaReader)
       .processor(this.inactiveMemberProcessor())
       .writer(this.inactiveMemberJpaWriter())
       .listener(inactiveMemberStepListener)
       .taskExecutor(taskExecutor())
-        .throttleLimit(2)
       .build();
   }
 
