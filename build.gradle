@@ -1,71 +1,76 @@
 plugins {
-  id 'org.springframework.boot' version '3.1.0'
-  id 'io.spring.dependency-management' version '1.1.0'
-  id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
 }
 
 allprojects {
-  apply plugin: 'org.springframework.boot'
-  apply plugin: 'io.spring.dependency-management'
-  apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
 
-  group = 'io.devfactory'
-  version = '0.0.1'
-  sourceCompatibility = JavaVersion.VERSION_19
-  targetCompatibility = JavaVersion.VERSION_19
+    group = 'io.devfactory'
+    version = '0.0.1'
 
-  repositories {
-    mavenCentral()
-  }
-
-  configurations {
-    compileOnly {
-      extendsFrom annotationProcessor
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
     }
-  }
 
-  dependencies {
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    repositories {
+        mavenCentral()
+    }
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
+    dependencies {
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  }
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
 
-  tasks.named('test') {
-    useJUnitPlatform()
-  }
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
 
-  tasks.named('compileJava') {
-    inputs.files(tasks.named('processResources'))
-  }
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+
+    tasks.named('compileJava') {
+        inputs.files(tasks.named('processResources'))
+    }
 }
 
 subprojects {
-  dependencies {
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
-  }
+    dependencies {
+        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'
+        implementation 'org.apache.commons:commons-lang3:3.15.0'
+    }
 }
 
 project(':server-batch') {
-  dependencies {
-    implementation project(':common')
-  }
+    dependencies {
+        implementation project(':common')
+    }
 }
 
 project(':server-rest') {
-  dependencies {
-    implementation project(':common')
-  }
+    dependencies {
+        implementation project(':common')
+    }
 }
 
 project(':server-web') {
-  dependencies {
-    implementation project(':common')
-  }
+    dependencies {
+        implementation project(':common')
+    }
 }
