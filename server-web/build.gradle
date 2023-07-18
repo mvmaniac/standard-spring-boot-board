@@ -8,7 +8,7 @@ dependencies {
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
   implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 
-  implementation 'org.webjars:jquery:3.6.0'
+  implementation 'org.webjars:jquery:3.7.1'
   implementation 'org.webjars:bootstrap:4.5.0'
   implementation 'org.webjars:font-awesome:5.15.3'
 }
