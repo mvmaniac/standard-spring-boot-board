@@ -15,10 +15,11 @@
   <div id="navbarMenu" class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
-        <a href="javascript:void(0)" data-toggle="dropdown" class="nav-link dropdown-toggle">Boards</a>
+        <a href="javascript:void(0)" data-toggle="dropdown"
+           class="nav-link dropdown-toggle">Boards</a>
         <div class="dropdown-menu">
           <a th:href="@{/boards}" class="dropdown-item">전체 게시판</a>
-          <a th:href="@{/boards/my}" class="dropdown-item">나의 게시판</a>
+          <a th:href="@{/boards/{id}(id=${session?.member?.idx})}" class="dropdown-item">나의 게시판</a>
         </div>
       </li>
       <li class="nav-item dropdown">

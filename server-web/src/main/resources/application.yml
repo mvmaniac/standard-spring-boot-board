@@ -25,7 +25,7 @@ spring:
 
 logging:
   level:
-    #org.springframework: debug
+    #org.springframework.security: debug
     io.devfactory: debug
 
 decorator:
