@@ -1,0 +1,15 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: analytics-view-service
+
+logging:
+  level:
+    io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

@@ -1,0 +1,15 @@
+server:
+  port: 9004
+
+spring:
+  application:
+    name: article-ranking-service
+
+logging:
+  level:
+    io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

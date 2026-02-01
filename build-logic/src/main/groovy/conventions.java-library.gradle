@@ -1,0 +1,22 @@
+plugins {
+  id 'conventions.java-common'
+  id 'java-library'
+}
+
+dependencies {
+  implementation platform(libs.spring.boot.dependencies.get())
+  annotationProcessor platform(libs.spring.boot.dependencies.get())
+  testAnnotationProcessor platform(libs.spring.boot.dependencies.get())
+
+  implementation libs.logback.classic.get()
+
+  compileOnly libs.lombok.get()
+  annotationProcessor libs.lombok.get()
+  testCompileOnly libs.lombok.get()
+  testAnnotationProcessor libs.lombok.get()
+
+  testImplementation libs.junit.jupiter.get()
+  testImplementation libs.assertj.core.get()
+
+  testRuntimeOnly libs.junit.platform.launcher.get()
+}

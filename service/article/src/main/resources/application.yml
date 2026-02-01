@@ -1,0 +1,15 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: article-service
+
+logging:
+  level:
+    io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

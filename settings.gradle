@@ -1,9 +1,18 @@
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
+  repositories {
+    gradlePluginPortal()
+  }
 }
 
 rootProject.name = 'standard-spring-boot-board'
 
-include 'server-batch', 'server-rest', 'server-web', 'common'
+includeBuild 'build-logic'
+
+include ':common:snowflake'
+
+include ':service:article'
+include ':service:article-query'
+include ':service:article-ranking'
+include ':service:reaction'
+include ':service:analytics-view'
+include ':service:comment'

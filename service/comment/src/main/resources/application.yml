@@ -1,0 +1,15 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: comment-service
+
+logging:
+  level:
+    io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

@@ -1,0 +1,15 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: reaction-service
+
+logging:
+  level:
+    io.devfactory: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
