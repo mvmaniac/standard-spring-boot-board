@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface ArticleLikeCountMapper {
 
-  int initLikeCount(@Param("articleId") Long articleId);
+  int upsertLikeCount(@Param("articleId") Long articleId);
 
   int incrementLikeCount(@Param("articleId") Long articleId);
 

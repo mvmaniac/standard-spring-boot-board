@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface ArticleCommentCountMapper {
 
-  int initArticleCommentCount(@Param("articleId") Long articleId);
+  int upsertArticleCommentCount(@Param("articleId") Long articleId);
 
   int incrementArticleCommentCount(@Param("articleId") Long articleId);
 

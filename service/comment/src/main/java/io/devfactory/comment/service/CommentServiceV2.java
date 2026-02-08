@@ -66,10 +66,9 @@ public class CommentServiceV2 {
     final var savedComment = commentRepository.save(newComment);
     commentRepository.flush(); // 명시적 호출
 
-    int result = articleCommentCountMapper.incrementArticleCommentCount(savedComment.getArticleId());
-    if (result == 0) {
-      articleCommentCountMapper.initArticleCommentCount(savedComment.getArticleId());
-    }
+    // 최초 요청 시에는 update 되는 레코드가 없으므로 1로 초기화
+    // 그 이후에는 업데이트가 되므로 이를 위해 upsert 사용, 원래는 생성시 같이 0으로 생성하는게 권장됨...
+    articleCommentCountMapper.upsertArticleCommentCount(savedComment.getArticleId());
 
     return CommentResponse.from(savedComment);
   }

@@ -4,9 +4,11 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress SqlNoDataSourceInspection, SqlResolve -->
 <mapper namespace="io.devfactory.comment.mapper.ArticleCommentCountMapper">
-  <insert id="initArticleCommentCount" parameterType="long">
+  <insert id="upsertArticleCommentCount" parameterType="long">
     INSERT INTO tb_article_comment_count (article_id, comment_count)
     VALUES (#{articleId}, 1)
+    ON DUPLICATE KEY UPDATE
+    comment_count = comment_count + 1
   </insert>
 
   <update id="incrementArticleCommentCount" parameterType="long">

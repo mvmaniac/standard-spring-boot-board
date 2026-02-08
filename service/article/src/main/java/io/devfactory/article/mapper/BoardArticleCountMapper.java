@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface BoardArticleCountMapper {
 
-  int initBoardArticleCount(@Param("boardId") Long boardId);
+  int upsertBoardArticleCount(@Param("boardId") Long boardId);
 
   int incrementBoardArticleCount(@Param("boardId") Long boardId);
 

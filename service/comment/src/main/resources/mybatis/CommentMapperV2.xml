@@ -4,7 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress SqlNoDataSourceInspection, SqlResolve -->
 <mapper namespace="io.devfactory.comment.mapper.CommentMapperV2">
-
   <select id="findDescendantsTopPath" resultType="string">
     SELECT tc.path
     FROM tb_comment_v2 tc
@@ -13,7 +12,7 @@
     AND tc.path LIKE CONCAT(#{pathPrefix}, '%')
     ORDER BY tc.path DESC
     LIMIT 1
-</select>
+  </select>
 
   <select id="findCommentsWithPaging" resultType="CommentRowV2">
     SELECT
@@ -42,7 +41,7 @@
       WHERE tc.article_id = #{articleId}
       LIMIT #{limit}
     ) t
-</select>
+  </select>
 
   <select id="findCommentsWithScroll" resultType="CommentRowV2">
     SELECT
@@ -74,5 +73,4 @@
     ORDER BY tc.path
     LIMIT #{limit}
   </select>
-
 </mapper>

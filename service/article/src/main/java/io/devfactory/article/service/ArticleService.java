@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.PageFormat;
 import java.util.List;
 
 @Slf4j
@@ -59,10 +58,9 @@ public class ArticleService {
     final var savedArticle = articleRepository.save(newArticle);
     articleRepository.flush(); // 명시적 호출
 
-    int result = boardArticleCountMapper.incrementBoardArticleCount(savedArticle.getBoardId());
-    if (result == 0) {
-      boardArticleCountMapper.initBoardArticleCount(savedArticle.getBoardId());
-    }
+    // 최초 요청 시에는 update 되는 레코드가 없으므로 1로 초기화
+    // 그 이후에는 업데이트가 되므로 이를 위해 upsert 사용, 원래는 생성시 같이 0으로 생성하는게 권장됨...
+    boardArticleCountMapper.upsertBoardArticleCount(savedArticle.getBoardId());
 
     return ArticleResponse.from(savedArticle);
   }

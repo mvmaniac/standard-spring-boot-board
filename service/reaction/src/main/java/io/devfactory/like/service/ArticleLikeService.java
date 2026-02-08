@@ -43,12 +43,9 @@ public class ArticleLikeService {
     articleLikeRepository.save(newArticleLike);
     articleLikeRepository.flush(); // 명시적 호출
 
-    int result = articleLikeCountMapper.incrementLikeCount(articleId);
-    if (result == 0) {
-      // 최초 요청 시에는 update 되는 레코드가 없으므로, 1로 초기화한다.
-      // 트래픽이 순식간에 몰릴 수 있는 상황에는 유실될 수 있으므로, 게시글 생성 시점에 미리 0으로 초기화 해둘 수도 있다.
-      articleLikeCountMapper.initLikeCount(articleId);
-    }
+    // 최초 요청 시에는 update 되는 레코드가 없으므로 1로 초기화
+    // 그 이후에는 업데이트가 되므로 이를 위해 upsert 사용, 원래는 생성시 같이 0으로 생성하는게 권장됨...
+    articleLikeCountMapper.upsertLikeCount(articleId);
   }
 
   @Transactional
@@ -68,6 +65,9 @@ public class ArticleLikeService {
     final var newArticleLike = ArticleLike.create(snowflake.nextId(), articleId, userId);
     articleLikeRepository.save(newArticleLike);
 
+    // findLockedByArticleId에서 lock이 안잡히고 orElseGet으로 빠지는 경우에
+    // 여러 스레드가 동시에 들어온 경우라면 경쟁상태가 될 수 있음
+    // 생성 시점에 init을 해주는게 제일 나은듯...
     final var articleLikeCount = articleLikeCountRepository.findLockedByArticleId(articleId)
         .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
 

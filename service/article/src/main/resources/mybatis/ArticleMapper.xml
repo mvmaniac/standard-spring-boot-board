@@ -4,7 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress SqlNoDataSourceInspection, SqlResolve -->
 <mapper namespace="io.devfactory.article.mapper.ArticleMapper">
-
   <select id="findArticlesWithPaging" resultType="ArticleRow">
     SELECT
       ta.article_id
@@ -66,5 +65,4 @@
     ORDER BY article_id DESC
     LIMIT #{limit}
   </select>
-
 </mapper>
