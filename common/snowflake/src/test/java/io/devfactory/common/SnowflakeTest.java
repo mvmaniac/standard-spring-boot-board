@@ -17,10 +17,10 @@ class SnowflakeTest {
   @Test
   void nextIdTest() throws ExecutionException, InterruptedException {
     // given
-    try (ExecutorService executorService = Executors.newFixedThreadPool(10)) {
-      List<Future<List<Long>>> futures = new ArrayList<>();
-      int repeatCount = 1000;
-      int idCount = 1000;
+    try (final var executorService = Executors.newFixedThreadPool(10)) {
+      final var futures = new ArrayList<Future<List<Long>>>();
+      final var repeatCount = 1000;
+      final var idCount = 1000;
 
       // when
       for (int i = 0; i < repeatCount; i++) {
@@ -28,9 +28,9 @@ class SnowflakeTest {
       }
 
       // then
-      List<Long> result = new ArrayList<>();
-      for (Future<List<Long>> future : futures) {
-        List<Long> idList = future.get();
+      final var result = new ArrayList<Long>();
+      for (final var future : futures) {
+        final var idList = future.get();
         for (int i = 1; i < idList.size(); i++) {
           assertThat(idList.get(i)).isGreaterThan(idList.get(i - 1));
         }
@@ -43,7 +43,7 @@ class SnowflakeTest {
   }
 
   List<Long> generateIdList(Snowflake snowflake, int count) {
-    List<Long> idList = new ArrayList<>();
+    final var idList = new ArrayList<Long>();
     while (count-- > 0) {
       idList.add(snowflake.nextId());
     }
@@ -53,13 +53,13 @@ class SnowflakeTest {
   @Test
   void nextIdPerformanceTest() throws InterruptedException {
     // given
-    try (ExecutorService executorService = Executors.newFixedThreadPool(10)) {
-      int repeatCount = 1000;
-      int idCount = 1000;
-      CountDownLatch latch = new CountDownLatch(repeatCount);
+    try (final var executorService = Executors.newFixedThreadPool(10)) {
+      final var repeatCount = 1000;
+      final var idCount = 1000;
+      final var latch = new CountDownLatch(repeatCount);
 
       // when
-      long start = System.nanoTime();
+      final var start = System.nanoTime();
       for (int i = 0; i < repeatCount; i++) {
         executorService.submit(() -> {
           generateIdList(snowflake, idCount);
@@ -69,7 +69,7 @@ class SnowflakeTest {
 
       latch.await();
 
-      long end = System.nanoTime();
+      final var end = System.nanoTime();
       log.debug("[dev] times = {} ms", (end - start) / 1_000_000);
 
       executorService.shutdown();

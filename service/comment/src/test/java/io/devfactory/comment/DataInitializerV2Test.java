@@ -46,10 +46,10 @@ class DataInitializerV2Test {
   @Test
   void initialize() {
     assertDoesNotThrow(() -> {
-      try (ExecutorService executorService = Executors.newFixedThreadPool(10)) {
+      try (final var executorService = Executors.newFixedThreadPool(10)) {
         for (int i = 0; i < EXECUTE_COUNT; i++) {
-          int start = i * BULK_INSERT_SIZE;
-          int end = (i + 1) * BULK_INSERT_SIZE;
+          final var start = i * BULK_INSERT_SIZE;
+          final var end = (i + 1) * BULK_INSERT_SIZE;
 
           executorService.submit(() -> {
             try {
@@ -69,7 +69,7 @@ class DataInitializerV2Test {
   void insert(int start, int end) {
     transactionTemplate.executeWithoutResult(_ -> {
       for (int i = start; i < end; i++) {
-        CommentV2 comment = CommentV2.create(
+        final var comment = CommentV2.create(
             snowflake.nextId(),
             "content",
             1L,

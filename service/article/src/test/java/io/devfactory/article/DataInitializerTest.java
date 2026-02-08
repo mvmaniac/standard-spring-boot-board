@@ -40,7 +40,7 @@ class DataInitializerTest {
   @Test
   void initialize() {
     assertDoesNotThrow(() -> {
-      try (ExecutorService executorService = Executors.newFixedThreadPool(10)) {
+      try (final var executorService = Executors.newFixedThreadPool(10)) {
         for (int i = 0; i < EXECUTE_COUNT; i++) {
           executorService.submit(() -> {
             try {
