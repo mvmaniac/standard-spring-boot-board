@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.article.mapper.ArticleMapper">
+
+  <select id="findArticlesWithPaging" resultType="ArticleRow">
+    SELECT
+      ta.article_id
+      , ta.title
+      , ta.content
+      , ta.board_id
+      , ta.writer_id
+      , ta.created_at
+      , ta.modified_at
+    FROM (
+      SELECT a.article_id
+      FROM tb_article a
+      WHERE a.board_id = #{boardId}
+      ORDER BY a.article_id DESC
+      LIMIT #{limit} OFFSET #{offset}
+    ) t
+    LEFT OUTER JOIN tb_article ta ON t.article_id = ta.article_id
+  </select>
+
+  <select id="countArticlesWithLimit" resultType="long">
+    SELECT COUNT(*)
+    FROM (
+      SELECT ta.article_id
+      FROM tb_article ta
+      WHERE ta.board_id = #{boardId}
+      LIMIT #{limit}
+    ) t
+  </select>
+
+  <select id="findArticlesWithScroll" resultType="ArticleRow">
+    SELECT
+      ta.article_id
+      , ta.title
+      , ta.content
+      , ta.board_id
+      , ta.writer_id
+      , ta.created_at
+      , ta.modified_at
+    FROM tb_article ta
+    WHERE board_id = #{boardId}
+    ORDER BY article_id DESC
+    LIMIT #{limit}
+  </select>
+
+  <select id="findArticlesNextWithScroll" resultType="ArticleRow">
+    SELECT
+      ta.article_id
+      , ta.title
+      , ta.content
+      , ta.board_id
+      , ta.writer_id
+      , ta.created_at
+      , ta.modified_at
+    FROM tb_article ta
+    WHERE board_id = #{boardId}
+    <if test="lastArticleId != null">
+      AND article_id &lt; #{lastArticleId}
+    </if>
+    ORDER BY article_id DESC
+    LIMIT #{limit}
+  </select>
+
+</mapper>

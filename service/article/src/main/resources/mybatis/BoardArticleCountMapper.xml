@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.article.mapper.BoardArticleCountMapper">
+  <insert id="initBoardArticleCount" parameterType="long">
+    INSERT INTO tb_board_article_count (board_id, article_count)
+    VALUES (#{boardId}, 1)
+  </insert>
+
+  <update id="incrementBoardArticleCount" parameterType="long">
+    UPDATE tb_board_article_count tbac
+    SET tbac.article_count = tbac.article_count + 1
+    WHERE tbac.board_id = #{boardId}
+  </update>
+
+  <update id="decreaseBoardArticleCount" parameterType="long">
+    UPDATE tb_board_article_count tbac
+    SET tbac.article_count = tbac.article_count - 1
+    WHERE tbac.board_id = #{boardId}
+  </update>
+</mapper>
