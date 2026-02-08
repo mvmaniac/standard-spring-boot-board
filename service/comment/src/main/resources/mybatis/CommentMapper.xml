@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.comment.mapper.CommentMapper">
+  <select id="countCommentChildren" resultType="long">
+    SELECT COUNT(*)
+    FROM (
+      SELECT tc.comment_id
+      FROM tb_comment tc
+      WHERE tc.article_id = #{articleId}
+      AND tc.parent_comment_id = #{parentCommentId}
+      LIMIT #{limit}
+    ) t
+</select>
+
+  <select id="findCommentsWithPaging" resultType="CommentRow">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.parent_comment_id
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.created_at
+    FROM (
+      SELECT tc.comment_id
+      FROM tb_comment tc
+      WHERE tc.article_id = #{articleId}
+      ORDER BY tc.parent_comment_id, tc.comment_id
+      LIMIT #{limit} OFFSET #{offset}
+    ) t
+    LEFT OUTER JOIN tb_comment tc ON t.comment_id = tc.comment_id
+  </select>
+
+  <select id="countCommentsWithLimit" resultType="long">
+    SELECT COUNT(*)
+    FROM (
+      SELECT tc.comment_id
+      FROM tb_comment tc
+      WHERE tc.article_id = #{articleId}
+      LIMIT #{limit}
+    ) t
+</select>
+
+  <select id="findCommentsWithScroll" resultType="CommentRow">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.parent_comment_id
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.created_at
+    FROM tb_comment tc
+    WHERE tc.article_id = #{articleId}
+    ORDER BY tc.parent_comment_id, tc.comment_id
+    LIMIT #{limit}
+  </select>
+
+  <select id="findCommentsNextWithScroll" resultType="CommentRow">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.parent_comment_id
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.created_at
+    FROM tb_comment tc
+    WHERE tc.article_id = #{articleId}
+    AND (
+      parent_comment_id &gt; #{lastParentCommentId}
+      OR (parent_comment_id = #{lastParentCommentId} AND comment_id &gt; #{lastCommentId})
+    )
+    ORDER BY tc.parent_comment_id, tc.comment_id
+    LIMIT #{limit}
+  </select>
+</mapper>

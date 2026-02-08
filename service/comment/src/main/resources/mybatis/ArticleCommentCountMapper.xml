@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.comment.mapper.ArticleCommentCountMapper">
+  <insert id="initArticleCommentCount" parameterType="long">
+    INSERT INTO tb_article_comment_count (article_id, comment_count)
+    VALUES (#{articleId}, 1)
+  </insert>
+
+  <update id="incrementArticleCommentCount" parameterType="long">
+    UPDATE tb_article_comment_count tacc
+    SET tacc.comment_count = tacc.comment_count + 1
+    WHERE tacc.article_id = #{articleId}
+  </update>
+
+  <update id="decreaseArticleCommentCount" parameterType="long">
+    UPDATE tb_article_comment_count tacc
+    SET tacc.comment_count = tacc.comment_count - 1
+    WHERE tacc.article_id = #{articleId}
+  </update>
+</mapper>

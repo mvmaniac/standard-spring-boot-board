@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.comment.mapper.CommentMapperV2">
+
+  <select id="findDescendantsTopPath" resultType="string">
+    SELECT tc.path
+    FROM tb_comment_v2 tc
+    WHERE tc.article_id = #{articleId}
+    AND tc.path &gt; #{pathPrefix}
+    AND tc.path LIKE CONCAT(#{pathPrefix}, '%')
+    ORDER BY tc.path DESC
+    LIMIT 1
+</select>
+
+  <select id="findCommentsWithPaging" resultType="CommentRowV2">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.path
+      , tc.created_at
+    FROM (
+      SELECT tc.comment_id
+      FROM tb_comment_v2 tc
+      WHERE tc.article_id = #{articleId}
+      ORDER BY tc.path
+      LIMIT #{limit} OFFSET #{offset}
+    ) t
+    LEFT OUTER JOIN tb_comment_v2 tc ON t.comment_id = tc.comment_id
+  </select>
+
+  <select id="countCommentsWithLimit" resultType="long">
+    SELECT COUNT(*)
+    FROM (
+      SELECT tc.comment_id
+      FROM tb_comment_v2 tc
+      WHERE tc.article_id = #{articleId}
+      LIMIT #{limit}
+    ) t
+</select>
+
+  <select id="findCommentsWithScroll" resultType="CommentRowV2">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.path
+      , tc.created_at
+    FROM tb_comment_v2 tc
+    WHERE tc.article_id = #{articleId}
+    ORDER BY tc.path
+    LIMIT #{limit}
+  </select>
+
+  <select id="findCommentsNextWithScroll" resultType="CommentRowV2">
+    SELECT
+      tc.comment_id
+      , tc.content
+      , tc.article_id
+      , tc.writer_id
+      , tc.deleted
+      , tc.path
+      , tc.created_at
+    FROM tb_comment_v2 tc
+    WHERE tc.article_id = #{articleId}
+    AND tc.path &gt; #{lastPath}
+    ORDER BY tc.path
+    LIMIT #{limit}
+  </select>
+
+</mapper>
