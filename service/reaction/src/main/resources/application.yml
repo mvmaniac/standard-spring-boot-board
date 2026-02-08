@@ -5,6 +5,32 @@ spring:
   application:
     name: reaction-service
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_boot_board_reaction
+    username: dev
+    password: dev
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+    hibernate:
+      ddl-auto: none
+
+mybatis:
+  mapper-locations: classpath:/mybatis/**/*.xml
+  type-aliases-package: io.devfactory.comment.mapper.model
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: OTHER
+    call-setters-on-nulls: false
+    default-statement-timeout: 30
+
 logging:
   level:
     io.devfactory: debug

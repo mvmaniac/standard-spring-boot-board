@@ -1,0 +1,112 @@
+package io.devfactory.like.service;
+
+import io.devfactory.common.Snowflake;
+import io.devfactory.like.dto.response.ArticleLikeResponse;
+import io.devfactory.like.entity.ArticleLike;
+import io.devfactory.like.entity.ArticleLikeCount;
+import io.devfactory.like.mapper.ArticleLikeCountMapper;
+import io.devfactory.like.repository.ArticleLikeCountRepository;
+import io.devfactory.like.repository.ArticleLikeRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Service
+public class ArticleLikeService {
+
+  private final ArticleLikeRepository articleLikeRepository;
+  private final ArticleLikeCountRepository articleLikeCountRepository;
+  private final ArticleLikeCountMapper articleLikeCountMapper;
+
+  private final Snowflake snowflake = new Snowflake();
+
+  public Long count(Long articleId) {
+    return articleLikeCountRepository.findById(articleId)
+        .map(ArticleLikeCount::getLikeCount)
+        .orElse(0L);
+  }
+
+  public ArticleLikeResponse read(Long articleId, Long userId) {
+    return articleLikeRepository.findByArticleIdAndUserId(articleId, userId)
+        .map(ArticleLikeResponse::from)
+        .orElseThrow();
+  }
+
+  // update문을 통한 Lock
+  @Transactional
+  public void likeWithPessimisticLock1(Long articleId, Long userId) {
+    final var newArticleLike = ArticleLike.create(snowflake.nextId(), articleId, userId);
+    articleLikeRepository.save(newArticleLike);
+    articleLikeRepository.flush(); // 명시적 호출
+
+    int result = articleLikeCountMapper.incrementLikeCount(articleId);
+    if (result == 0) {
+      // 최초 요청 시에는 update 되는 레코드가 없으므로, 1로 초기화한다.
+      // 트래픽이 순식간에 몰릴 수 있는 상황에는 유실될 수 있으므로, 게시글 생성 시점에 미리 0으로 초기화 해둘 수도 있다.
+      articleLikeCountMapper.initLikeCount(articleId);
+    }
+  }
+
+  @Transactional
+  public void unlikeWithPessimisticLock1(Long articleId, Long userId) {
+    final var articleLike = articleLikeRepository.findByArticleIdAndUserId(articleId, userId).orElse(null);
+    if (articleLike == null) return;
+
+    articleLikeRepository.delete(articleLike);
+    articleLikeRepository.flush(); // 명시적 호출
+
+    articleLikeCountMapper.decreaseLikeCount(articleId);
+  }
+
+  // select ... for update + update
+  @Transactional
+  public void likeWithPessimisticLock2(Long articleId, Long userId) {
+    final var newArticleLike = ArticleLike.create(snowflake.nextId(), articleId, userId);
+    articleLikeRepository.save(newArticleLike);
+
+    final var articleLikeCount = articleLikeCountRepository.findLockedByArticleId(articleId)
+        .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
+
+    articleLikeCount.increase();
+    articleLikeCountRepository.save(articleLikeCount); // 최초 없을 수 있으므로 명시적으로 호출
+  }
+
+  @Transactional
+  public void unlikeWithPessimisticLock2(Long articleId, Long userId) {
+    final var articleLike = articleLikeRepository.findByArticleIdAndUserId(articleId, userId).orElse(null);
+    if (articleLike == null) return;
+
+    articleLikeRepository.delete(articleLike);
+
+    final var articleLikeCount = articleLikeCountRepository.findLockedByArticleId(articleId).orElseThrow();
+    articleLikeCount.decrease();
+  }
+
+  @Transactional
+  public void likeWithOptimisticLock(Long articleId, Long userId) {
+    final var newArticleLike = ArticleLike.create(snowflake.nextId(), articleId, userId);
+    articleLikeRepository.save(newArticleLike);
+
+    final var articleLikeCount = articleLikeCountRepository.findById(articleId)
+        .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
+
+    articleLikeCount.increase();
+    articleLikeCountRepository.save(articleLikeCount); // 최초 없을 수 있으므로 명시적으로 호출
+  }
+
+  @Transactional
+  public void unlikeWithOptimisticLock(Long articleId, Long userId) {
+    final var articleLike = articleLikeRepository.findByArticleIdAndUserId(articleId, userId).orElse(null);
+    if (articleLike == null) return;
+
+    articleLikeRepository.delete(articleLike);
+
+    final var articleLikeCount = articleLikeCountRepository.findById(articleId).orElseThrow();
+    articleLikeCount.decrease();
+  }
+
+}
