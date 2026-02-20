@@ -1,4 +1,4 @@
-package io.devfactory.common;
+﻿package io.devfactory.common.snowflake;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

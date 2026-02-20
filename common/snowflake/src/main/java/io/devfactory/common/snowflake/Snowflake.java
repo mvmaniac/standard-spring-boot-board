@@ -1,4 +1,4 @@
-package io.devfactory.common;
+﻿package io.devfactory.common.snowflake;
 
 import java.util.function.LongSupplier;
 import java.util.random.RandomGenerator;
@@ -38,7 +38,7 @@ public class Snowflake {
 
     if (currentTimeMillis < lastTimeMillis) {
       throw new IllegalStateException(
-          "System clock moved backwards: current=" + currentTimeMillis + ", last=" + lastTimeMillis
+        "System clock moved backwards: current=" + currentTimeMillis + ", last=" + lastTimeMillis
       );
     }
 
@@ -54,8 +54,8 @@ public class Snowflake {
     lastTimeMillis = currentTimeMillis;
 
     return ((currentTimeMillis - START_TIME_MILLIS) << (NODE_ID_BITS + SEQUENCE_BITS))
-        | (nodeId << SEQUENCE_BITS)
-        | sequence;
+      | (nodeId << SEQUENCE_BITS)
+      | sequence;
   }
 
   private long waitNextMillis(long currentTimestamp) {
