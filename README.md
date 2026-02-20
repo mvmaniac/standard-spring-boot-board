@@ -1,30 +1,18 @@
 # Standard Spring Boot Board
 
-### 1. 책 실습 예제 기반
+### 1. 강의 실습 예제 기반
 
-- [처음 배우는 스프링 부트 2](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791162241264&orderClick=LEa&Kc=# "처음 배우는 스프링 부트 2")
+- [스프링부트로 직접 만들면서 배우는 대규모 시스템 설계 - 게시판](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8%EB%A1%9C-%EB%8C%80%EA%B7%9C%EB%AA%A8-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%84%A4%EA%B3%84-%EA%B2%8C%EC%8B%9C%ED%8C%90 "스프링부트로 직접 만들면서 배우는 대규모 시스템 설계 - 게시판")
   참고
 
-### 2. 차이점
+### 2. TODO
 
-- Spring Boot 3, Gradle 8 기반
-- EditorConfig 설정 추가
-- 아래 3개의 모듈은 별도의 어플리케이션으로 동작함
-  - server-rest
-  - server-batch
-  - server-web
-- common 모듈은 domain과 repository만 있음
-- 최대한 이해한 부분만 적용함
+-
 
-### 3. TODO
+### 3. 참고
 
-- server-web
-  - form 로그인, 네이버 로그인 추가
-  - oauth2 로그아웃 처리(?)
-  - 기본 error -> errors 폴더 변경 시 처리
-  - 목록 페이지 ajax 처리(?)
-
-- server-rest
-  - DTO 클래스 추가
-  - HATEOAS 적용
-  - 회원인증
+- article-ranking
+  - 인기글 목록을 제공하는 모듈
+  - 일 단위로 상위 10건 인기글을 선정하는데 매일 오전 1시 업데이트로 가정함
+  - 10월 1일 00시 00분 ~ 10월 2일 00시 00분까지의 데이터를 기준으로 선정하여 
+    10월 2일 오전 1시에 클라이언에 조회하는 키값을 바꿈으로써 제공
