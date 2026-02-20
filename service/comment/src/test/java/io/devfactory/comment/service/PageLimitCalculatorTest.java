@@ -1,4 +1,4 @@
-package io.devfactory.comment.service;
+﻿package io.devfactory.comment.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,11 +21,12 @@ class PageLimitCalculatorTest {
 
   private static Stream<Arguments> calculatePageLimitParams() {
     return Stream.of(
-        Arguments.of(1L, 30L, 10L, 301L),
-        Arguments.of(7L, 30L, 10L, 301L),
-        Arguments.of(10L, 30L, 10L, 301L),
-        Arguments.of(11L, 30L, 10L, 601L),
-        Arguments.of(12L, 30L, 10L, 601L)
+      Arguments.of(1L, 30L, 10L, 301L),
+      Arguments.of(7L, 30L, 10L, 301L),
+      Arguments.of(10L, 30L, 10L, 301L),
+      Arguments.of(11L, 30L, 10L, 601L),
+      Arguments.of(12L, 30L, 10L, 601L)
     );
   }
+
 }

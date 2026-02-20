@@ -1,4 +1,4 @@
-package io.devfactory.article.mapper.model;
+﻿package io.devfactory.article.mapper.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

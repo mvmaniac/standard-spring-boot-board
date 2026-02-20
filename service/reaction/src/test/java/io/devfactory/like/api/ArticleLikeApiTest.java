@@ -1,4 +1,4 @@
-package io.devfactory.like.api;
+﻿package io.devfactory.like.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -65,9 +65,11 @@ class ArticleLikeApiTest {
     this.startCountDownLatch(executorService, 3333L, "optimistic-lock");
   }
 
-  private void startCountDownLatch(ExecutorService executorService, Long articleId,
-      String lockType) throws InterruptedException {
-
+  private void startCountDownLatch(
+    ExecutorService executorService,
+    Long articleId,
+    String lockType
+  ) throws InterruptedException {
     final var latch = new CountDownLatch(3000);
     log.info("[dev] {} start", lockType);
 

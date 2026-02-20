@@ -1,4 +1,4 @@
-package io.devfactory.comment.api;
+﻿package io.devfactory.comment.api;
 
 import io.devfactory.comment.dto.request.CommentCreateRequest;
 import io.devfactory.comment.dto.request.CommentCreateRequestV2;
@@ -77,7 +77,7 @@ class CommentApiTest {
 
     // 재귀적 삭제로 첫번째 댓글 조회 시 에러
     assertThatThrownBy(() -> api.read(response.getCommentId()))
-        .isInstanceOf(HttpServerErrorException.InternalServerError.class); // 서버에서 NoSuchElementException이 발생함
+      .isInstanceOf(HttpServerErrorException.InternalServerError.class); // 서버에서 NoSuchElementException이 발생함
   }
 
   @DisplayName("readTest")
@@ -130,29 +130,29 @@ class CommentApiTest {
 
     final var nextPage = api.readWithScroll(articleId, pageSize, lastParentCommentId, lastCommentId);
     assertThat(nextPage)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(pageSize.intValue())
-        .allSatisfy(comment -> assertThat(comment.getParentCommentId()).isGreaterThanOrEqualTo(lastParentCommentId));
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(pageSize.intValue())
+      .allSatisfy(comment -> assertThat(comment.getParentCommentId()).isGreaterThanOrEqualTo(lastParentCommentId));
 
     log.info("[dev] readWithScrollTest nextPage = {}", nextPage);
   }
 
   private static Stream<CommentCreateRequest> createRequests() {
     return Stream.of(
-        CommentCreateRequest.of(1L, "my-comment-1", null, 1L),
-        CommentCreateRequest.of(1L, "my-comment-2", null, 1L)
+      CommentCreateRequest.of(1L, "my-comment-1", null, 1L),
+      CommentCreateRequest.of(1L, "my-comment-2", null, 1L)
     );
   }
 
   private static Stream<Arguments> readWithPagingRequests() {
     return Stream.of(
-        Arguments.of(1L, 50000L, 30L)
+      Arguments.of(1L, 50000L, 30L)
     );
   }
 
   private static Stream<Arguments> readWithScrollRequests() {
     return Stream.of(
-        Arguments.of(1L, 5L)
+      Arguments.of(1L, 5L)
     );
   }
 

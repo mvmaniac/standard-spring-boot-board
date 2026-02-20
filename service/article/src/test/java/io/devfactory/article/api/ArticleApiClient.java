@@ -1,4 +1,4 @@
-package io.devfactory.article.api;
+﻿package io.devfactory.article.api;
 
 import io.devfactory.article.dto.request.ArticleCreateRequest;
 import io.devfactory.article.dto.request.ArticleUpdateRequest;
@@ -33,20 +33,20 @@ class ArticleApiClient {
 
   public ArticlePageResponse readWithPaging(Long boardId, Long page, Long pageSize) {
     return restClientSupport.get(
-        baseUrl() + "/v1/articles?boardId={boardId}&page={page}&pageSize={pageSize}",
-        ArticlePageResponse.class,
-        boardId,
-        page,
-        pageSize
+      baseUrl() + "/v1/articles?boardId={boardId}&page={page}&pageSize={pageSize}",
+      ArticlePageResponse.class,
+      boardId,
+      page,
+      pageSize
     );
   }
 
   public List<ArticleResponse> readWithScroll(Long boardId, Long pageSize) {
     return restClientSupport.get(
-        baseUrl() + "/v1/articles/scroll?boardId={boardId}&pageSize={pageSize}",
-        ARTICLE_LIST_TYPE,
-        boardId,
-        pageSize
+      baseUrl() + "/v1/articles/scroll?boardId={boardId}&pageSize={pageSize}",
+      ARTICLE_LIST_TYPE,
+      boardId,
+      pageSize
     );
   }
 
@@ -54,11 +54,11 @@ class ArticleApiClient {
     if (lastArticleId == null) return readWithScroll(boardId, pageSize);
 
     return restClientSupport.get(
-        baseUrl() + "/v1/articles/scroll?boardId={boardId}&pageSize={pageSize}&lastArticleId={lastArticleId}",
-        ARTICLE_LIST_TYPE,
-        boardId,
-        pageSize,
-        lastArticleId
+      baseUrl() + "/v1/articles/scroll?boardId={boardId}&pageSize={pageSize}&lastArticleId={lastArticleId}",
+      ARTICLE_LIST_TYPE,
+      boardId,
+      pageSize,
+      lastArticleId
     );
   }
 
@@ -68,8 +68,8 @@ class ArticleApiClient {
 
   public boolean delete(Long articleId) {
     return restClientSupport.delete(baseUrl() + "/v1/articles/{articleId}", articleId)
-        .getStatusCode()
-        .is2xxSuccessful();
+      .getStatusCode()
+      .is2xxSuccessful();
   }
 
   private String baseUrl() {

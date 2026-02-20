@@ -1,15 +1,15 @@
-package io.devfactory.comment.entity;
-
+﻿package io.devfactory.comment.entity;
 
 import jakarta.persistence.Embeddable;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @ToString
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class CommentPath {
 

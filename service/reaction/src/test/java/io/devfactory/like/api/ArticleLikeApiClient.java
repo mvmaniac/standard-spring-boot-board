@@ -1,4 +1,4 @@
-package io.devfactory.like.api;
+﻿package io.devfactory.like.api;
 
 import io.devfactory.like.dto.response.ArticleLikeResponse;
 import org.springframework.core.env.Environment;
@@ -25,8 +25,8 @@ class ArticleLikeApiClient {
 
   public boolean unlike(Long articleId, Long userId, String lockType) {
     return restClientSupport.delete(baseUrl() + "/v1/article-likes/articles/{articleId}/users/{userId}/{lockType}", articleId, userId, lockType)
-        .getStatusCode()
-        .is2xxSuccessful();
+      .getStatusCode()
+      .is2xxSuccessful();
   }
 
   public ArticleLikeResponse read(Long articleId, Long userId) {

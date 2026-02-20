@@ -1,4 +1,4 @@
-package io.devfactory.like.repository;
+﻿package io.devfactory.like.repository;
 
 import io.devfactory.like.entity.ArticleLikeCount;
 import jakarta.persistence.LockModeType;

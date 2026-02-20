@@ -1,4 +1,4 @@
-package io.devfactory.comment.dto.request;
+﻿package io.devfactory.comment.dto.request;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -12,8 +12,12 @@ public class CommentCreateRequestV2 {
   private String parentPath;
   private Long writerId;
 
-  public static CommentCreateRequestV2 of(Long articleId, String content, String parentPath,
-      Long writerId) {
+  public static CommentCreateRequestV2 of(
+    Long articleId,
+    String content,
+    String parentPath,
+    Long writerId
+  ) {
     final var request = new CommentCreateRequestV2();
     request.articleId = articleId;
     request.content = content;

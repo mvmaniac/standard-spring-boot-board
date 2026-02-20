@@ -1,4 +1,4 @@
-package io.devfactory.comment.entity;
+﻿package io.devfactory.comment.entity;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -29,7 +29,8 @@ public class CommentV2 {
   private CommentPath commentPath;
 
   public static CommentV2 create(Long commentId, String content, Long articleId, Long writerId,
-      CommentPath commentPath) {
+    CommentPath commentPath
+  ) {
     CommentV2 comment = new CommentV2();
     comment.commentId = commentId;
     comment.content = content;

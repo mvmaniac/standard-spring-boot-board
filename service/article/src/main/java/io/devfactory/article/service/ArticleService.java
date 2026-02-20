@@ -1,4 +1,4 @@
-package io.devfactory.article.service;
+﻿package io.devfactory.article.service;
 
 import io.devfactory.article.dto.request.ArticleCreateRequest;
 import io.devfactory.article.dto.request.ArticleUpdateRequest;
@@ -10,7 +10,7 @@ import io.devfactory.article.mapper.ArticleMapper;
 import io.devfactory.article.mapper.BoardArticleCountMapper;
 import io.devfactory.article.repository.ArticleRepository;
 import io.devfactory.article.repository.BoardArticleCountRepository;
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,17 +34,19 @@ public class ArticleService {
 
   public ArticlePageResponse readWithPaging(Long boardId, Long page, Long pageSize) {
     final var articles = articleMapper.findArticlesWithPaging(boardId, (page - 1) * pageSize, pageSize).stream()
-        .map(ArticleResponse::from)
-        .toList();
+      .map(ArticleResponse::from)
+      .toList();
+
     final var articleCount = articleMapper.countArticlesWithLimit(boardId,
-        PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
+      PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
+
     return ArticlePageResponse.of(articles, articleCount);
   }
 
   public List<ArticleResponse> readWithScroll(Long boardId, Long pageSize, Long lastArticleId) {
     final var articles = lastArticleId == null
-        ? articleMapper.findArticlesWithScroll(boardId, pageSize)
-        : articleMapper.findArticlesNextWithScroll(boardId, pageSize, lastArticleId);
+      ? articleMapper.findArticlesWithScroll(boardId, pageSize)
+      : articleMapper.findArticlesNextWithScroll(boardId, pageSize, lastArticleId);
     return articles.stream().map(ArticleResponse::from).toList();
   }
 
@@ -83,8 +85,8 @@ public class ArticleService {
 
   public Long countArticles(Long boardId) {
     return boardArticleCountRepository.findById(boardId)
-        .map(BoardArticleCount::getArticleCount)
-        .orElse(0L);
+      .map(BoardArticleCount::getArticleCount)
+      .orElse(0L);
   }
 
 }

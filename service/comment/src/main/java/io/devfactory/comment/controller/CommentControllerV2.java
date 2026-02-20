@@ -1,4 +1,4 @@
-package io.devfactory.comment.controller;
+﻿package io.devfactory.comment.controller;
 
 import io.devfactory.comment.dto.request.CommentCreateRequestV2;
 import io.devfactory.comment.dto.response.CommentPageResponse;
@@ -17,17 +17,19 @@ public class CommentControllerV2 {
 
   @GetMapping("/v2/comments")
   public CommentPageResponse readWithPaging(
-      @RequestParam("articleId") Long articleId,
-      @RequestParam("page") Long page,
-      @RequestParam("pageSize") Long pageSize) {
+    @RequestParam("articleId") Long articleId,
+    @RequestParam("page") Long page,
+    @RequestParam("pageSize") Long pageSize
+  ) {
     return commentService.readWithPaging(articleId, page, pageSize);
   }
 
   @GetMapping("/v2/comments/scroll")
   public List<CommentResponse> readWithScroll(
-      @RequestParam("articleId") Long articleId,
-      @RequestParam("pageSize") Long pageSize,
-      @RequestParam(value = "lastPath", required = false) String lastPath) {
+    @RequestParam("articleId") Long articleId,
+    @RequestParam("pageSize") Long pageSize,
+    @RequestParam(value = "lastPath", required = false) String lastPath
+  ) {
     return commentService.readWithScroll(articleId, pageSize, lastPath);
   }
 

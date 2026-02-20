@@ -1,4 +1,4 @@
-package io.devfactory.article.controller;
+﻿package io.devfactory.article.controller;
 
 import io.devfactory.article.dto.request.ArticleCreateRequest;
 import io.devfactory.article.dto.request.ArticleUpdateRequest;
@@ -18,17 +18,18 @@ public class ArticleController {
 
   @GetMapping("/v1/articles")
   public ArticlePageResponse readWithPaging(
-      @RequestParam("boardId") Long boardId,
-      @RequestParam("page") Long page,
-      @RequestParam("pageSize") Long pageSize) {
+    @RequestParam("boardId") Long boardId,
+    @RequestParam("page") Long page,
+    @RequestParam("pageSize") Long pageSize
+  ) {
     return articleService.readWithPaging(boardId, page, pageSize);
   }
 
   @GetMapping("/v1/articles/scroll")
   public List<ArticleResponse> readWithScroll(
-      @RequestParam("boardId") Long boardId,
-      @RequestParam("pageSize") Long pageSize,
-      @RequestParam(value = "lastArticleId", required = false) Long lastArticleId
+    @RequestParam("boardId") Long boardId,
+    @RequestParam("pageSize") Long pageSize,
+    @RequestParam(value = "lastArticleId", required = false) Long lastArticleId
   ) {
     return articleService.readWithScroll(boardId, pageSize, lastArticleId);
   }
@@ -44,8 +45,10 @@ public class ArticleController {
   }
 
   @PutMapping("/v1/articles/{articleId}")
-  public ArticleResponse update(@PathVariable Long articleId,
-      @RequestBody ArticleUpdateRequest request) {
+  public ArticleResponse update(
+    @PathVariable Long articleId,
+    @RequestBody ArticleUpdateRequest request
+  ) {
     return articleService.update(articleId, request);
   }
 

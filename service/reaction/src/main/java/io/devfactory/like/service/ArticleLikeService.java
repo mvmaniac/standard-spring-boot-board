@@ -1,6 +1,6 @@
-package io.devfactory.like.service;
+﻿package io.devfactory.like.service;
 
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import io.devfactory.like.dto.response.ArticleLikeResponse;
 import io.devfactory.like.entity.ArticleLike;
 import io.devfactory.like.entity.ArticleLikeCount;
@@ -26,14 +26,14 @@ public class ArticleLikeService {
 
   public Long count(Long articleId) {
     return articleLikeCountRepository.findById(articleId)
-        .map(ArticleLikeCount::getLikeCount)
-        .orElse(0L);
+      .map(ArticleLikeCount::getLikeCount)
+      .orElse(0L);
   }
 
   public ArticleLikeResponse read(Long articleId, Long userId) {
     return articleLikeRepository.findByArticleIdAndUserId(articleId, userId)
-        .map(ArticleLikeResponse::from)
-        .orElseThrow();
+      .map(ArticleLikeResponse::from)
+      .orElseThrow();
   }
 
   // update문을 통한 Lock
@@ -69,7 +69,7 @@ public class ArticleLikeService {
     // 여러 스레드가 동시에 들어온 경우라면 경쟁상태가 될 수 있음
     // 생성 시점에 init을 해주는게 제일 나은듯...
     final var articleLikeCount = articleLikeCountRepository.findLockedByArticleId(articleId)
-        .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
+      .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
 
     articleLikeCount.increase();
     articleLikeCountRepository.save(articleLikeCount); // 최초 없을 수 있으므로 명시적으로 호출
@@ -92,7 +92,7 @@ public class ArticleLikeService {
     articleLikeRepository.save(newArticleLike);
 
     final var articleLikeCount = articleLikeCountRepository.findById(articleId)
-        .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
+      .orElseGet(() -> ArticleLikeCount.init(articleId, 0L));
 
     articleLikeCount.increase();
     articleLikeCountRepository.save(articleLikeCount); // 최초 없을 수 있으므로 명시적으로 호출

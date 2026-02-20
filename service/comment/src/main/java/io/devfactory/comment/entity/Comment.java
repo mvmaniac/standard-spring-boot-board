@@ -1,4 +1,4 @@
-package io.devfactory.comment.entity;
+﻿package io.devfactory.comment.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,7 +26,8 @@ public class Comment {
   private LocalDateTime createdAt;
 
   public static Comment create(Long commentId, String content, Long parentCommentId, Long articleId,
-      Long writerId) {
+    Long writerId
+  ) {
     Comment comment = new Comment();
     comment.commentId = commentId;
     comment.content = content;

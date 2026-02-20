@@ -1,4 +1,4 @@
-package io.devfactory.like.entity;
+﻿package io.devfactory.like.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,7 +19,7 @@ public class ArticleLikeCount {
   private Long articleId; // shard key
   private Long likeCount;
 
-//  @Version
+  @Version
   private Long version;
 
   public static ArticleLikeCount init(Long articleId, Long likeCount) {

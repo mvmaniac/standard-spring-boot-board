@@ -1,4 +1,4 @@
-package io.devfactory.comment.mapper;
+﻿package io.devfactory.comment.mapper;
 
 import io.devfactory.comment.config.MyBatisConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -47,8 +47,8 @@ class CommentMapperTest {
     final var comments = commentMapper.findCommentsWithScroll(articleId, limit);
 
     assertThat(comments)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(limit.intValue());
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(limit.intValue());
 
     if (comments.isEmpty()) return;
 
@@ -57,26 +57,26 @@ class CommentMapperTest {
     final var nextComments = commentMapper.findCommentsNextWithScroll(articleId, limit, lastParentCommentId, lastCommentId);
 
     assertThat(nextComments)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(limit.intValue())
-        .allSatisfy(comment -> assertThat(comment.getParentCommentId()).isGreaterThanOrEqualTo(lastParentCommentId));
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(limit.intValue())
+      .allSatisfy(comment -> assertThat(comment.getParentCommentId()).isGreaterThanOrEqualTo(lastParentCommentId));
   }
 
   private static Stream<Arguments> pagingParams() {
     return Stream.of(
-        Arguments.of(1L, 0L, 30L)
+      Arguments.of(1L, 0L, 30L)
     );
   }
 
   private static Stream<Arguments> countParams() {
     return Stream.of(
-        Arguments.of(1L, 10000L)
+      Arguments.of(1L, 10000L)
     );
   }
 
   private static Stream<Arguments> scrollParams() {
     return Stream.of(
-        Arguments.of(1L, 30L)
+      Arguments.of(1L, 30L)
     );
   }
 

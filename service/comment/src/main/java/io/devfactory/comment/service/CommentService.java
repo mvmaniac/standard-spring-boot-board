@@ -1,4 +1,4 @@
-package io.devfactory.comment.service;
+﻿package io.devfactory.comment.service;
 
 import io.devfactory.comment.dto.request.CommentCreateRequest;
 import io.devfactory.comment.dto.response.CommentPageResponse;
@@ -6,7 +6,7 @@ import io.devfactory.comment.dto.response.CommentResponse;
 import io.devfactory.comment.entity.Comment;
 import io.devfactory.comment.mapper.CommentMapper;
 import io.devfactory.comment.repository.CommentRepository;
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,18 +29,24 @@ public class CommentService {
 
   public CommentPageResponse readWithPaging(Long articleId, Long page, Long pageSize) {
     final var comments = commentMapper.findCommentsWithPaging(articleId, (page - 1) * pageSize, pageSize).stream()
-        .map(CommentResponse::from)
-        .toList();
+      .map(CommentResponse::from)
+      .toList();
+
     final var commentCount = commentMapper.countCommentsWithLimit(articleId,
-        PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
+      PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
+
     return CommentPageResponse.of(comments, commentCount);
   }
 
-  public List<CommentResponse> readWithScroll(Long articleId, Long pageSize,
-      Long lastParentCommentId, Long lastCommentId) {
+  public List<CommentResponse> readWithScroll(
+    Long articleId,
+    Long pageSize,
+    Long lastParentCommentId,
+    Long lastCommentId
+  ) {
     final var comments = lastParentCommentId == null || lastCommentId == null
-        ? commentMapper.findCommentsWithScroll(articleId, pageSize)
-        : commentMapper.findCommentsNextWithScroll(articleId, pageSize, lastParentCommentId, lastCommentId);
+      ? commentMapper.findCommentsWithScroll(articleId, pageSize)
+      : commentMapper.findCommentsNextWithScroll(articleId, pageSize, lastParentCommentId, lastCommentId);
     return comments.stream().map(CommentResponse::from).toList();
   }
 
@@ -63,16 +69,16 @@ public class CommentService {
     if (parentCommentId == null) return null;
 
     return commentRepository.findById(parentCommentId)
-        .filter(not(Comment::getDeleted))
-        .filter(Comment::isRoot)
-        .orElseThrow();
+      .filter(not(Comment::getDeleted))
+      .filter(Comment::isRoot)
+      .orElseThrow();
   }
 
   @Transactional
   public void delete(Long commentId) {
     final var comment = commentRepository.findById(commentId)
-        .filter(not(Comment::getDeleted))
-        .orElse(null);
+      .filter(not(Comment::getDeleted))
+      .orElse(null);
 
     if (comment == null) return;
 
@@ -97,9 +103,9 @@ public class CommentService {
     if (comment.isRoot()) return;
 
     commentRepository.findById(comment.getParentCommentId())
-        .filter(Comment::getDeleted)
-        .filter(not(this::hasChildren))
-        .ifPresent(this::deleteRecursively);
+      .filter(Comment::getDeleted)
+      .filter(not(this::hasChildren))
+      .ifPresent(this::deleteRecursively);
   }
 
 }

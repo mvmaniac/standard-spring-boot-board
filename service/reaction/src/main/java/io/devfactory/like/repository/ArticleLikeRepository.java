@@ -1,4 +1,4 @@
-package io.devfactory.like.repository;
+﻿package io.devfactory.like.repository;
 
 import io.devfactory.like.entity.ArticleLike;
 import org.springframework.data.jpa.repository.JpaRepository;

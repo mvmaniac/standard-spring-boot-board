@@ -1,4 +1,4 @@
-package io.devfactory.comment.entity;
+﻿package io.devfactory.comment.entity;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,8 @@ class CommentPathTest {
   }
 
   void createChildCommentTest(CommentPath commentPath, String descendantsTopPath,
-      String expectedChildPath) {
+    String expectedChildPath
+  ) {
     final var childCommentPath = commentPath.createChildCommentPath(descendantsTopPath);
     assertThat(childCommentPath.getPath()).isEqualTo(expectedChildPath);
   }
@@ -44,7 +45,7 @@ class CommentPathTest {
     final var commentPath = CommentPath.create("zzzzz".repeat(5));
 
     assertThatThrownBy(() -> commentPath.createChildCommentPath(null))
-        .isInstanceOf(IllegalStateException.class);
+      .isInstanceOf(IllegalStateException.class);
   }
 
   @Test
@@ -52,7 +53,7 @@ class CommentPathTest {
     final var commentPath = CommentPath.create("");
 
     assertThatThrownBy(() -> commentPath.createChildCommentPath("zzzzz"))
-        .isInstanceOf(IllegalStateException.class);
+      .isInstanceOf(IllegalStateException.class);
   }
 
 }

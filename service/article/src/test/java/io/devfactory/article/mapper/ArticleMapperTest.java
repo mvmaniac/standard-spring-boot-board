@@ -1,4 +1,4 @@
-package io.devfactory.article.mapper;
+﻿package io.devfactory.article.mapper;
 
 import io.devfactory.article.config.MyBatisConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -47,8 +47,8 @@ class ArticleMapperTest {
     final var articles = articleMapper.findArticlesWithScroll(boardId, limit);
 
     assertThat(articles)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(limit.intValue());
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(limit.intValue());
 
     if (articles.isEmpty()) return;
 
@@ -56,26 +56,26 @@ class ArticleMapperTest {
     final var nextArticles = articleMapper.findArticlesNextWithScroll(boardId, limit, lastArticleId);
 
     assertThat(nextArticles)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(limit.intValue())
-        .allSatisfy(article -> assertThat(article.getArticleId()).isLessThan(lastArticleId));
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(limit.intValue())
+      .allSatisfy(article -> assertThat(article.getArticleId()).isLessThan(lastArticleId));
   }
 
   private static Stream<Arguments> pagingParams() {
     return Stream.of(
-        Arguments.of(1L, 1499970L, 30L)
+      Arguments.of(1L, 1499970L, 30L)
     );
   }
 
   private static Stream<Arguments> countParams() {
     return Stream.of(
-        Arguments.of(1L, 10000L)
+      Arguments.of(1L, 10000L)
     );
   }
 
   private static Stream<Arguments> scrollParams() {
     return Stream.of(
-        Arguments.of(1L, 30L)
+      Arguments.of(1L, 30L)
     );
   }
 

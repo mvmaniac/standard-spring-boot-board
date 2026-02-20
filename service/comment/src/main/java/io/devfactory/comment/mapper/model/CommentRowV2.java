@@ -1,4 +1,4 @@
-package io.devfactory.comment.mapper.model;
+﻿package io.devfactory.comment.mapper.model;
 
 import io.devfactory.comment.entity.CommentPath;
 import lombok.Getter;

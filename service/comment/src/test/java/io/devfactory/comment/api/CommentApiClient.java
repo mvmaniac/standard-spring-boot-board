@@ -1,4 +1,4 @@
-package io.devfactory.comment.api;
+﻿package io.devfactory.comment.api;
 
 import io.devfactory.comment.dto.request.CommentCreateRequest;
 import io.devfactory.comment.dto.response.CommentPageResponse;
@@ -11,9 +11,7 @@ import java.util.List;
 
 class CommentApiClient {
 
-  private static final ParameterizedTypeReference<List<CommentResponse>> COMMENT_LIST_TYPE =
-      new ParameterizedTypeReference<>() {
-      };
+  private static final ParameterizedTypeReference<List<CommentResponse>> COMMENT_LIST_TYPE = new ParameterizedTypeReference<>() {};
 
   private final RestClientSupport restClientSupport;
   private final Environment environment;
@@ -34,40 +32,45 @@ class CommentApiClient {
 
   public CommentPageResponse readWithPaging(Long articleId, Long page, Long pageSize) {
     return restClientSupport.get(
-        baseUrl() + "/v1/comments?articleId={articleId}&page={page}&pageSize={pageSize}",
-        CommentPageResponse.class,
-        articleId,
-        page,
-        pageSize
+      baseUrl() + "/v1/comments?articleId={articleId}&page={page}&pageSize={pageSize}",
+      CommentPageResponse.class,
+      articleId,
+      page,
+      pageSize
     );
   }
 
   public List<CommentResponse> readWithScroll(Long articleId, Long pageSize) {
     return restClientSupport.get(
-        baseUrl() + "/v1/comments/scroll?articleId={articleId}&pageSize={pageSize}",
-        COMMENT_LIST_TYPE,
-        articleId,
-        pageSize
+      baseUrl() + "/v1/comments/scroll?articleId={articleId}&pageSize={pageSize}",
+      COMMENT_LIST_TYPE,
+      articleId,
+      pageSize
     );
   }
 
-  public List<CommentResponse> readWithScroll(Long articleId, Long pageSize, Long lastParentCommentId, Long lastCommentId) {
+  public List<CommentResponse> readWithScroll(
+    Long articleId,
+    Long pageSize,
+    Long lastParentCommentId,
+    Long lastCommentId
+  ) {
     if (lastCommentId == null) return readWithScroll(articleId, pageSize);
 
     return restClientSupport.get(
-        baseUrl() + "/v1/comments/scroll?articleId={articleId}&pageSize={pageSize}&lastParentCommentId={lastParentCommentId}&lastCommentId={lastCommentId}",
-        COMMENT_LIST_TYPE,
-        articleId,
-        pageSize,
-        lastParentCommentId,
-        lastCommentId
+      baseUrl() + "/v1/comments/scroll?articleId={articleId}&pageSize={pageSize}&lastParentCommentId={lastParentCommentId}&lastCommentId={lastCommentId}",
+      COMMENT_LIST_TYPE,
+      articleId,
+      pageSize,
+      lastParentCommentId,
+      lastCommentId
     );
   }
 
   public boolean delete(Long commentId) {
     return restClientSupport.delete(baseUrl() + "/v1/comments/{commentId}", commentId)
-        .getStatusCode()
-        .is2xxSuccessful();
+      .getStatusCode()
+      .is2xxSuccessful();
   }
 
   private String baseUrl() {

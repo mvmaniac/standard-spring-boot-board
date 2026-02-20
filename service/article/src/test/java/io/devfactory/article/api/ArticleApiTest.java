@@ -1,9 +1,7 @@
-package io.devfactory.article.api;
+﻿package io.devfactory.article.api;
 
 import io.devfactory.article.dto.request.ArticleCreateRequest;
 import io.devfactory.article.dto.request.ArticleUpdateRequest;
-import io.devfactory.article.dto.response.ArticlePageResponse;
-import io.devfactory.article.dto.response.ArticleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,7 +72,7 @@ class ArticleApiTest {
   void createUpdateDeleteFlow() {
     final var created = api.create(ArticleCreateRequest.of("flow-title", "flow-content", 1L, 1L));
     final var updated = api.update(created.getArticleId(),
-        ArticleUpdateRequest.of("flow-title-2", "flow-content-2"));
+      ArticleUpdateRequest.of("flow-title-2", "flow-content-2"));
 
     assertThat(updated.getArticleId()).isEqualTo(created.getArticleId());
     assertThat(api.delete(created.getArticleId())).isTrue();
@@ -109,42 +106,42 @@ class ArticleApiTest {
     final var nextPage = api.readWithScroll(boardId, pageSize, lastArticleId);
 
     assertThat(nextPage)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(pageSize.intValue())
-        .allSatisfy(article -> assertThat(article.getArticleId()).isLessThan(lastArticleId));
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(pageSize.intValue())
+      .allSatisfy(article -> assertThat(article.getArticleId()).isLessThan(lastArticleId));
 
     log.info("[dev] readAllTest nextPage = {}", nextPage);
   }
 
   private static Stream<ArticleCreateRequest> createRequests() {
     return Stream.of(
-        ArticleCreateRequest.of("hi", "my content", 1L, 1L),
-        ArticleCreateRequest.of("hello", "my content 2", 2L, 1L)
+      ArticleCreateRequest.of("hi", "my content", 1L, 1L),
+      ArticleCreateRequest.of("hello", "my content 2", 2L, 1L)
     );
   }
 
   private static Stream<Arguments> updateRequests() {
     return Stream.of(
-        Arguments.of(
-            ArticleCreateRequest.of("hi", "my content", 1L, 1L),
-            ArticleUpdateRequest.of("hi 2", "my content 22")
-        ),
-        Arguments.of(
-            ArticleCreateRequest.of("hello", "my content 2", 2L, 1L),
-            ArticleUpdateRequest.of("hello 2", "my content 222")
-        )
+      Arguments.of(
+        ArticleCreateRequest.of("hi", "my content", 1L, 1L),
+        ArticleUpdateRequest.of("hi 2", "my content 22")
+      ),
+      Arguments.of(
+        ArticleCreateRequest.of("hello", "my content 2", 2L, 1L),
+        ArticleUpdateRequest.of("hello 2", "my content 222")
+      )
     );
   }
 
   private static Stream<Arguments> readWithPagingRequests() {
     return Stream.of(
-        Arguments.of(1L, 50000L, 30L)
+      Arguments.of(1L, 50000L, 30L)
     );
   }
 
   private static Stream<Arguments> readWithScrollRequests() {
     return Stream.of(
-        Arguments.of(1L, 5L)
+      Arguments.of(1L, 5L)
     );
   }
 

@@ -1,4 +1,4 @@
-package io.devfactory.article.service;
+﻿package io.devfactory.article.service;
 
 public final class PageLimitCalculator {
 

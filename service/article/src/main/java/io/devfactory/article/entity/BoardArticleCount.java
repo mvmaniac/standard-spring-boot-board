@@ -1,4 +1,4 @@
-package io.devfactory.article.entity;
+﻿package io.devfactory.article.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

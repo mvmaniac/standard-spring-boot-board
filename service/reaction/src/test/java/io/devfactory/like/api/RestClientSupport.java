@@ -1,4 +1,4 @@
-package io.devfactory.like.api;
+﻿package io.devfactory.like.api;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
@@ -14,46 +14,46 @@ final class RestClientSupport {
 
   public <T> T get(String uri, Class<T> responseType, Object... uriVariables) {
     return restClient.get()
-        .uri(uri, uriVariables)
-        .retrieve()
-        .body(responseType);
+      .uri(uri, uriVariables)
+      .retrieve()
+      .body(responseType);
   }
 
   public <T> T get(String uri, ParameterizedTypeReference<T> responseType, Object... uriVariables) {
     return restClient.get()
-        .uri(uri, uriVariables)
-        .retrieve()
-        .body(responseType);
+      .uri(uri, uriVariables)
+      .retrieve()
+      .body(responseType);
   }
 
   public <T> T post(String uri, Object body, Class<T> responseType) {
     return restClient.post()
-        .uri(uri)
-        .body(body)
-        .retrieve()
-        .body(responseType);
+      .uri(uri)
+      .body(body)
+      .retrieve()
+      .body(responseType);
   }
 
   public <T> T post(String uri, Class<T> responseType, Object... uriVariables) {
     return restClient.post()
-        .uri(uri, uriVariables)
-        .retrieve()
-        .body(responseType);
+      .uri(uri, uriVariables)
+      .retrieve()
+      .body(responseType);
   }
 
   public <T> T put(String uri, Object body, Class<T> responseType, Object... uriVariables) {
     return restClient.put()
-        .uri(uri, uriVariables)
-        .body(body)
-        .retrieve()
-        .body(responseType);
+      .uri(uri, uriVariables)
+      .body(body)
+      .retrieve()
+      .body(responseType);
   }
 
   public ResponseEntity<Void> delete(String uri, Object... uriVariables) {
     return restClient.delete()
-        .uri(uri, uriVariables)
-        .retrieve()
-        .toBodilessEntity();
+      .uri(uri, uriVariables)
+      .retrieve()
+      .toBodilessEntity();
   }
 
 }

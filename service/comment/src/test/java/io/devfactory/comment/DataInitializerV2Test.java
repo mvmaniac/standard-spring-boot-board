@@ -1,9 +1,8 @@
-package io.devfactory.comment;
+﻿package io.devfactory.comment;
 
-import io.devfactory.comment.entity.Comment;
 import io.devfactory.comment.entity.CommentPath;
 import io.devfactory.comment.entity.CommentV2;
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -70,11 +68,11 @@ class DataInitializerV2Test {
     transactionTemplate.executeWithoutResult(_ -> {
       for (int i = start; i < end; i++) {
         final var comment = CommentV2.create(
-            snowflake.nextId(),
-            "content",
-            1L,
-            1L,
-            this.toPath(i)
+          snowflake.nextId(),
+          "content",
+          1L,
+          1L,
+          this.toPath(i)
         );
         entityManager.persist(comment);
       }

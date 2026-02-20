@@ -1,4 +1,4 @@
-package io.devfactory.comment.repository;
+﻿package io.devfactory.comment.repository;
 
 import io.devfactory.comment.entity.CommentV2;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface CommentRepositoryV2 extends JpaRepository<CommentV2, Long> {
 
-  @Query("select c from CommentV2 c where c.commentPath.path = :path")
-  Optional<CommentV2> findByPath(@Param("path") String path);
+  @Query("select c from CommentV2 c where c.articleId = :articleLid and c.commentPath.path = :path")
+  Optional<CommentV2> findByArticleIdAndPath(@Param("articleId") Long articleLid,
+    @Param("path") String path
+  );
 
 }

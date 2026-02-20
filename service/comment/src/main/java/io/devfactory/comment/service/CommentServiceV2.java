@@ -1,4 +1,4 @@
-package io.devfactory.comment.service;
+﻿package io.devfactory.comment.service;
 
 import io.devfactory.comment.dto.request.CommentCreateRequestV2;
 import io.devfactory.comment.dto.response.CommentPageResponse;
@@ -10,7 +10,7 @@ import io.devfactory.comment.mapper.ArticleCommentCountMapper;
 import io.devfactory.comment.mapper.CommentMapperV2;
 import io.devfactory.comment.repository.ArticleCommentCountRepository;
 import io.devfactory.comment.repository.CommentRepositoryV2;
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,17 +36,18 @@ public class CommentServiceV2 {
 
   public CommentPageResponse readWithPaging(Long articleId, Long page, Long pageSize) {
     final var comments = commentMapper.findCommentsWithPaging(articleId, (page - 1) * pageSize, pageSize).stream()
-        .map(CommentResponse::from)
-        .toList();
+      .map(CommentResponse::from)
+      .toList();
+
     final var commentCount = commentMapper.countCommentsWithLimit(
-        articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
+      articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L));
     return CommentPageResponse.of(comments, commentCount);
   }
 
   public List<CommentResponse> readWithScroll(Long articleId, Long pageSize, String lastPath) {
     final var comments = lastPath == null
-        ? commentMapper.findCommentsWithScroll(articleId, pageSize)
-        : commentMapper.findCommentsNextWithScroll(articleId, pageSize, lastPath);
+      ? commentMapper.findCommentsWithScroll(articleId, pageSize)
+      : commentMapper.findCommentsNextWithScroll(articleId, pageSize, lastPath);
     return comments.stream().map(CommentResponse::from).toList();
   }
 
@@ -74,19 +75,21 @@ public class CommentServiceV2 {
   }
 
   private CommentV2 findParent(CommentCreateRequestV2 request) {
+    final var articleId = request.getArticleId();
     final var parentPath = request.getParentPath();
-    if (parentPath == null) return null;
 
-    return commentRepository.findByPath(parentPath)
-        .filter(not(CommentV2::getDeleted))
-        .orElseThrow();
+    if (articleId == null || parentPath == null) return null;
+
+    return commentRepository.findByArticleIdAndPath(articleId, parentPath)
+      .filter(not(CommentV2::getDeleted))
+      .orElseThrow();
   }
 
   @Transactional
   public void delete(Long commentId) {
     final var comment = commentRepository.findById(commentId)
-        .filter(not(CommentV2::getDeleted))
-        .orElse(null);
+      .filter(not(CommentV2::getDeleted))
+      .orElse(null);
 
     if (comment == null) return;
 
@@ -112,16 +115,16 @@ public class CommentServiceV2 {
 
     if (comment.isRoot()) return;
 
-    commentRepository.findByPath(comment.getCommentPath().getParentPath())
-        .filter(CommentV2::getDeleted)
-        .filter(not(this::hasChildren))
-        .ifPresent(this::deleteRecursively);
+    commentRepository.findByArticleIdAndPath(comment.getArticleId(), comment.getCommentPath().getParentPath())
+      .filter(CommentV2::getDeleted)
+      .filter(not(this::hasChildren))
+      .ifPresent(this::deleteRecursively);
   }
 
   public Long countComments(Long articleId) {
     return articleCommentCountRepository.findById(articleId)
-        .map(ArticleCommentCount::getCommentCount)
-        .orElse(0L);
+      .map(ArticleCommentCount::getCommentCount)
+      .orElse(0L);
   }
 
 }

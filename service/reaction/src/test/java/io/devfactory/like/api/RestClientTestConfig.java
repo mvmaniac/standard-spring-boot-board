@@ -1,4 +1,4 @@
-package io.devfactory.like.api;
+﻿package io.devfactory.like.api;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

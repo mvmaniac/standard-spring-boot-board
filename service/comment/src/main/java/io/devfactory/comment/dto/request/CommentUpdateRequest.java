@@ -1,4 +1,4 @@
-package io.devfactory.comment.dto.request;
+﻿package io.devfactory.comment.dto.request;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -14,4 +14,5 @@ public class CommentUpdateRequest {
     request.content = content;
     return request;
   }
+
 }

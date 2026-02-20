@@ -1,4 +1,4 @@
-package io.devfactory.like.dto.response;
+﻿package io.devfactory.like.dto.response;
 
 import io.devfactory.like.entity.ArticleLike;
 import lombok.Getter;

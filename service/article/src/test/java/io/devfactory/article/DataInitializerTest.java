@@ -1,7 +1,7 @@
-package io.devfactory.article;
+﻿package io.devfactory.article;
 
 import io.devfactory.article.entity.Article;
-import io.devfactory.common.Snowflake;
+import io.devfactory.common.snowflake.Snowflake;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

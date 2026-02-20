@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress SqlNoDataSourceInspection, SqlResolve -->
 <mapper namespace="io.devfactory.like.mapper.ArticleLikeCountMapper">
   <insert id="upsertLikeCount" parameterType="long">
@@ -15,14 +15,14 @@
   <update id="incrementLikeCount" parameterType="long">
     UPDATE tb_article_like_count talc
     SET talc.like_count = talc.like_count + 1
-    , talc.version = talc.version + 1
+      , talc.version = talc.version + 1
     WHERE talc.article_id = #{articleId}
   </update>
 
   <update id="decreaseLikeCount" parameterType="long">
     UPDATE tb_article_like_count talc
     SET talc.like_count = talc.like_count - 1
-    , talc.version = talc.version + 1
+      , talc.version = talc.version + 1
     WHERE talc.article_id = #{articleId}
   </update>
 </mapper>

@@ -1,4 +1,4 @@
-package io.devfactory.comment.mapper.model;
+﻿package io.devfactory.comment.mapper.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

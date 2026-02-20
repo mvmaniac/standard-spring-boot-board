@@ -1,4 +1,4 @@
-package io.devfactory.comment.dto.response;
+﻿package io.devfactory.comment.dto.response;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -18,4 +18,5 @@ public class CommentPageResponse {
     response.commentCount = commentCount;
     return response;
   }
+
 }

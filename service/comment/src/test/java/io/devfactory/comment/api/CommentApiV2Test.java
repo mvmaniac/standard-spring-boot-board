@@ -1,4 +1,4 @@
-package io.devfactory.comment.api;
+﻿package io.devfactory.comment.api;
 
 import io.devfactory.comment.dto.request.CommentCreateRequest;
 import io.devfactory.comment.dto.request.CommentCreateRequestV2;
@@ -76,7 +76,7 @@ class CommentApiV2Test {
 
     log.info("[dev] createWithChildrenTest responseChild2 = {}", responseChild2);
 
-     // 첫번째 댓글 삭제
+    // 첫번째 댓글 삭제
     assertThat(api.delete(response.getCommentId())).isTrue();
 
     // 첫번째 자식 댓글 삭제
@@ -95,7 +95,7 @@ class CommentApiV2Test {
 
     // 재귀적 삭제로 첫번째 댓글 조회 시 에러
     assertThatThrownBy(() -> api.read(response.getCommentId()))
-        .isInstanceOf(HttpServerErrorException.InternalServerError.class); // 서버에서 NoSuchElementException이 발생함
+      .isInstanceOf(HttpServerErrorException.InternalServerError.class); // 서버에서 NoSuchElementException이 발생함
   }
 
   @DisplayName("readTest")
@@ -147,29 +147,29 @@ class CommentApiV2Test {
 
     final var nextPage = api.readWithScroll(articleId, pageSize, lastPath);
     assertThat(nextPage)
-        .isNotNull()
-        .hasSizeLessThanOrEqualTo(pageSize.intValue())
-        .allSatisfy(comment -> assertThat(comment.getPath()).isGreaterThanOrEqualTo(lastPath));
+      .isNotNull()
+      .hasSizeLessThanOrEqualTo(pageSize.intValue())
+      .allSatisfy(comment -> assertThat(comment.getPath()).isGreaterThanOrEqualTo(lastPath));
 
     log.info("[dev] readWithPagingTest nextPage = {}", nextPage);
   }
 
   private static Stream<CommentCreateRequestV2> createRequests() {
     return Stream.of(
-        CommentCreateRequestV2.of(1L, "my-comment-1", null, 1L),
-        CommentCreateRequestV2.of(1L, "my-comment-2", null, 1L)
+      CommentCreateRequestV2.of(1L, "my-comment-1", null, 1L),
+      CommentCreateRequestV2.of(1L, "my-comment-2", null, 1L)
     );
   }
 
   private static Stream<Arguments> readWithPagingRequests() {
     return Stream.of(
-        Arguments.of(1L, 50000L, 30L)
+      Arguments.of(1L, 50000L, 30L)
     );
   }
 
   private static Stream<Arguments> readWithScrollRequests() {
     return Stream.of(
-        Arguments.of(1L, 5L)
+      Arguments.of(1L, 5L)
     );
   }
 
