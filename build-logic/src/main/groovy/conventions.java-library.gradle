@@ -10,6 +10,8 @@ dependencies {
 
   implementation libs.logback.classic.get()
 
+  compileOnlyApi libs.jspecify.get()
+
   compileOnly libs.lombok.get()
   annotationProcessor libs.lombok.get()
   testCompileOnly libs.lombok.get()

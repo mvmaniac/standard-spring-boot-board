@@ -4,6 +4,10 @@ plugins {
   id 'io.spring.dependency-management'
 }
 
+configurations {
+  mockitoAgent
+}
+
 dependencies {
   implementation libs.spring.boot.starter.webmvc.get()
   implementation libs.spring.boot.starter.validation.get()
@@ -19,8 +23,16 @@ dependencies {
   testImplementation libs.spring.boot.starter.test.webmvc.get()
   testImplementation libs.spring.boot.starter.test.validation.get()
   testRuntimeOnly libs.junit.platform.launcher.get()
+
+  mockitoAgent('org.mockito:mockito-core') { transitive = false }
 }
 
 tasks.named('compileJava') {
   inputs.files(tasks.named('processResources'))
+}
+
+test {
+  if (configurations.hasProperty('mockitoAgent')) {
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
+  }
 }

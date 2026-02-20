@@ -8,7 +8,11 @@ rootProject.name = 'standard-spring-boot-board'
 
 includeBuild 'build-logic'
 
+include ':common:core'
 include ':common:snowflake'
+include ':common:serializer'
+include ':common:event'
+include ':common:outbox'
 
 include ':service:article'
 include ':service:article-query'
