@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlResolve -->
+<mapper namespace="io.devfactory.view.mapper.ArticleViewCountBackUpMapper">
+  <select id="selectArticleViewCountById" resultType="long">
+    SELECT tavc.view_count
+    FROM tb_article_view_count tavc
+    WHERE tavc.article_id = #{articleId}
+  </select>
+
+  <insert id="upsertArticleViewCount" parameterType="map">
+    INSERT INTO tb_article_view_count (article_id, view_count)
+    VALUES (#{articleId}, #{viewCount}) AS newData
+    ON DUPLICATE KEY UPDATE
+    view_count = IF(
+      tb_article_view_count.view_count &lt; newData.view_count,
+      newData.view_count,
+      tb_article_view_count.view_count
+    )
+  </insert>
+</mapper>

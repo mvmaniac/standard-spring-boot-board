@@ -5,6 +5,37 @@ spring:
   application:
     name: analytics-view-service
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_boot_board_analytics_view
+    username: dev
+    password: dev
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+    hibernate:
+      ddl-auto: none
+
+  data:
+    redis:
+      host: 192.16.8.0.28
+      port: 16379
+
+mybatis:
+  mapper-locations: classpath:/mybatis/**/*.xml
+  type-aliases-package: io.devfactory.view.mapper.model
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: OTHER
+    call-setters-on-nulls: false
+    default-statement-timeout: 30
+
 logging:
   level:
     io.devfactory: debug
